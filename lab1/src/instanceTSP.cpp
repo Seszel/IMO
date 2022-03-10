@@ -1,5 +1,17 @@
 #include "instanceTSP.hpp"
 
+std::string ltrim(const std::string &s) {
+	return std::regex_replace(s, std::regex("^:\\s+"), std::string(""));
+}
+
+std::string rtrim(const std::string &s) {
+	return std::regex_replace(s, std::regex("\\s+$"), std::string(""));
+}
+
+std::string trim(const std::string &s) {
+	return ltrim(rtrim(s));
+}
+
 void InstanceTSP::readFromFile(std::string path){
 
     std::fstream file;
@@ -28,19 +40,19 @@ void InstanceTSP::readFromFile(std::string path){
                 items.push_back(line.substr(0, line.length()));
 
                 if (items[0] == "NAME"){
-                    this->name = items[1];
+                    this->name = trim(items[1]);
                 }
                 else if (items[0] == "TYPE"){
-                    this->type = items[1];
+                    this->type = trim(items[1]);
                 }
                 else if (items[0] == "COMMENT"){
-                    this->comment = items[1];
+                    this->comment = trim(items[1]);
                 }
-                else if (items[0] == "DIMENSION:"){
-                    this->dimension = stoi(items[1]);
+                else if (items[0] == "DIMENSION"){
+                    this->dimension = stoi(trim(items[1]));
                 }
-                else if (items[0] == "EDGE_WEIGHT_TYPE"){
-                    this->edgeWeightType = items[2];
+                else if (items[0].find("EDGE_WEIGHT_TYPE") != std::string::npos){
+                    this->edgeWeightType = trim(items[1]);
                 }
                 else if (items[0] == "NODE_COORD_SECTION"){
                     

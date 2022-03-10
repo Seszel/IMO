@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <regex>
 
 template <typename T>
 struct Point{
