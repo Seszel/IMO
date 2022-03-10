@@ -23,14 +23,7 @@ void InstanceTSP::readFromFile(std::string path){
                 line.erase(0, pos + space_delimiter.length());
             }
 
-            if (stoi(items[0]) > 0){
-                Point<int> point;
-                point.x = stoi(items[1]);
-                point.y = stoi(items[2]);
-
-                InstanceTSP::nodes.push_back(point);
-            }
-            else if (items[0] == "NAME:"){
+            if (items[0] == "NAME:"){
                 InstanceTSP::name = items[1];
             }
             else if (items[0] == "TYPE:"){
@@ -45,8 +38,17 @@ void InstanceTSP::readFromFile(std::string path){
             else if (items[0] == "EDGE_WEIGHT_TYPE"){
                 InstanceTSP::edgeWeightType = items[2];
             }
-        
+            else if (items[0] == "NODE_COORD_SECTION"){
+                ;
+            }
+            else {
+                Point<int> point;
+                point.x = stoi(items[1]);
+                point.y = stoi(items[2]);
 
+                InstanceTSP::nodes.push_back(point);
+            }
+        
         }
         file.close();
     }
