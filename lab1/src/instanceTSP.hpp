@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
 
 template <typename T>
 struct Point{

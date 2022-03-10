@@ -9,58 +9,64 @@ void InstanceTSP::readFromFile(std::string path){
     if (file.good()){
 
         std::string line;
-        std::string space_delimiter = " ";
+        std::string delimiter = ":";
 
-        while (!file.eof()){
+        bool READING_NODES = false;
 
-            getline(file, line);
+        getline(file, line);
+
+        while (line != "EOF"){
 
             std::vector<std::string> items;
             size_t pos = 0;
 
-            while ((pos = line.find(space_delimiter)) != std::string::npos) {
-                items.push_back(line.substr(0, pos));
-                line.erase(0, pos + space_delimiter.length());
-            }
+            if(READING_NODES == false){
 
-            if (items[0] == "NAME:"){
-                InstanceTSP::name = items[1];
-            }
-            else if (items[0] == "TYPE:"){
-                InstanceTSP::type = items[1];
-            }
-            else if (items[0] == "COMMENT:"){
-                InstanceTSP::comment = items[1];
-            }
-            else if (items[0] == "DIMENSION:"){
-                InstanceTSP::dimension = stoi(items[1]);
-            }
-            else if (items[0] == "EDGE_WEIGHT_TYPE"){
-                InstanceTSP::edgeWeightType = items[2];
-            }
-            else if (items[0] == "NODE_COORD_SECTION" || items[0] == "EOF"){
-                ;
-                std::cout << "yay" << std::endl;
+                pos = line.find(delimiter);
+                items.push_back(line.substr(0, pos));
+                line.erase(0, pos);
+                items.push_back(line.substr(0, line.length()));
+
+                if (items[0] == "NAME"){
+                    this->name = items[1];
+                }
+                else if (items[0] == "TYPE"){
+                    this->type = items[1];
+                }
+                else if (items[0] == "COMMENT"){
+                    this->comment = items[1];
+                }
+                else if (items[0] == "DIMENSION:"){
+                    this->dimension = stoi(items[1]);
+                }
+                else if (items[0] == "EDGE_WEIGHT_TYPE"){
+                    this->edgeWeightType = items[2];
+                }
+                else if (items[0] == "NODE_COORD_SECTION"){
+                    
+                    READING_NODES = true;
+                }
             }
             else {
+                
+                pos = line.find(' ');
+                while(pos != std::string::npos){
+                    items.push_back(line.substr(0, pos));
+                    line.erase(0,pos + 1);
+                    pos = line.find(' ');
+                }
+                items.push_back(line);
+                
                 Point<int> point;
                 point.x = stoi(items[1]);
                 point.y = stoi(items[2]);
 
-                InstanceTSP::nodes.push_back(point);
+                this->nodes.push_back(point);
             }
-        
+
+            getline(file, line);
         }
         file.close();
-
-        std::cout << InstanceTSP::name << std::endl;
-        std::cout << InstanceTSP::type << std::endl;
-        std::cout << InstanceTSP::comment << std::endl;
-        std::cout << InstanceTSP::dimension << std::endl;
-        std::cout << InstanceTSP::edgeWeightType << std::endl;
-        for (auto const& n : InstanceTSP::nodes){
-            std::cout << (n.x, n.y) << std::endl;
-        }
     }   
 }
 
