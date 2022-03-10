@@ -4,6 +4,7 @@
 #include "instance.hpp"
 
 #include <vector>
+#include <iostream>
 
 template <typename T>
 struct Point{
@@ -19,7 +20,7 @@ class InstanceTSP : public Instance {
         std::string comment;
         int dimension;
         std::string edgeWeightType;
-        std::vector<Point<int>> nodes;
+        std::vector<Point<int > > nodes;
         int ** matrix = nullptr;
     
     public:

@@ -15,7 +15,7 @@ void InstanceTSP::readFromFile(std::string path){
 
             getline(file, line);
 
-            std::vector<std::string> items{};
+            std::vector<std::string> items;
             size_t pos = 0;
 
             while ((pos = line.find(space_delimiter)) != std::string::npos) {
@@ -38,8 +38,9 @@ void InstanceTSP::readFromFile(std::string path){
             else if (items[0] == "EDGE_WEIGHT_TYPE"){
                 InstanceTSP::edgeWeightType = items[2];
             }
-            else if (items[0] == "NODE_COORD_SECTION"){
+            else if (items[0] == "NODE_COORD_SECTION" || items[0] == "EOF"){
                 ;
+                std::cout << "yay" << std::endl;
             }
             else {
                 Point<int> point;
@@ -51,5 +52,16 @@ void InstanceTSP::readFromFile(std::string path){
         
         }
         file.close();
-    }
+
+        std::cout << InstanceTSP::name << std::endl;
+        std::cout << InstanceTSP::type << std::endl;
+        std::cout << InstanceTSP::comment << std::endl;
+        std::cout << InstanceTSP::dimension << std::endl;
+        std::cout << InstanceTSP::edgeWeightType << std::endl;
+        for (auto const& n : InstanceTSP::nodes){
+            std::cout << (n.x, n.y) << std::endl;
+        }
+    }   
 }
+
+void InstanceTSP::writeData(){}
