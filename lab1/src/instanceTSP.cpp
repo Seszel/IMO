@@ -79,7 +79,18 @@ void InstanceTSP::readFromFile(std::string path){
             getline(file, line);
         }
         file.close();
-    }   
+    }
+    int x2, y2, d;
+    for (int i=0; i<nodes.size(); i++){
+        std::vector<int > temp;
+        for (int j=0; j<nodes.size(); j++){
+            x2 = pow((nodes[i].x - nodes[j].x), 2);
+            y2 = pow((nodes[i].y - nodes[j].y), 2);
+            d = (int)(sqrt(x2 + y2) + 0.5);
+            temp.push_back(d);
+        }
+        this->matrix.push_back(temp);
+    } 
 }
 
 void InstanceTSP::writeData(){}

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <regex>
+#include <cmath>
 
 template <typename T>
 struct Point{
@@ -23,7 +24,7 @@ class InstanceTSP : public Instance {
         int dimension;
         std::string edgeWeightType;
         std::vector<Point<int > > nodes;
-        int ** matrix = nullptr;
+        std::vector<std::vector<int > > matrix;
     
     public:
         InstanceTSP(){
@@ -31,9 +32,9 @@ class InstanceTSP : public Instance {
         }
         virtual ~InstanceTSP(){
 
-            if(matrix != nullptr){
-                delete matrix;
-            }
+            // if(matrix != nullptr){
+            //     delete matrix;
+            // }
         }
 
         void readFromFile(std::string path) override;
