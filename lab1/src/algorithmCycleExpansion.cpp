@@ -56,8 +56,14 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
             }
 
             currentCycle->addVertex(pos, next);
+            visited[next]= true;
         }
     }
+
+    finalSolution.setAlgorithmType("cycle_expansion");
+    finalSolution.setInstanceName(instance.getName());
+
+    finalSolution.setInstance(instance);
 
     return finalSolution;
 }

@@ -1,6 +1,6 @@
 #include "algorithm2cycles.hpp"
 
-int findClosestVertex(int v, const InstanceTSP & instance, std::vector<bool > & visited){
+int Algorithm2cycles::findClosestVertex(int v, const InstanceTSP & instance, std::vector<bool > & visited){
 
     int min = RAND_MAX;
     int closestVertex = -1;

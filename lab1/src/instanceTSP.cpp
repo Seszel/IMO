@@ -94,3 +94,8 @@ void InstanceTSP::readFromFile(std::string path){
 }
 
 void InstanceTSP::writeData(){}
+
+const std::string InstanceTSP::getName() const{
+
+    return this->name;
+}

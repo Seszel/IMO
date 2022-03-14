@@ -1,6 +1,18 @@
 #include "cycle.hpp"
 
-const int Cycle::getTotalCost(){
+const int Cycle::getTotalCost(const InstanceTSP & instance){
+
+    int cost = 0;
+
+    for(int i = 0; i < this->vertices.size(); i ++){
+
+        int prev = this->vertices[i];
+        int succ = this->vertices[(i + 1 + this->vertices.size()) % this->vertices.size()];
+
+        cost +=  instance.matrix[prev][succ];
+    }
+
+    this->totalCost = cost;
 
     return this->totalCost;
 }

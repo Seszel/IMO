@@ -1,6 +1,7 @@
 #ifndef CYCLE_HPP
 #define CYCLE_HPP
 
+#include "instanceTSP.hpp"
 #include <vector>
 
 class Cycle{
@@ -12,9 +13,11 @@ private:
 
 public:
 
-    Cycle(){}
+    Cycle(){
+        this->totalCost = 0;
+    }
 
-    const int getTotalCost();
+    const int getTotalCost(const InstanceTSP &);
     int operator[](std::size_t);
     void removeVertex(std::size_t);
     void addVertex(std::size_t, const int);

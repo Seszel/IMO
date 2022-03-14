@@ -41,6 +41,7 @@ class InstanceTSP : public Instance {
 
         void readFromFile(std::string path) override;
         void writeData() override;
+        const std::string getName() const;
 
 };
 
