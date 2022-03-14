@@ -19,6 +19,8 @@ public:
     void removeVertex(std::size_t);
     void addVertex(std::size_t, const int);
 
+    void pushBackVertex(const int);
+    int getLength();
 };
 
 #endif

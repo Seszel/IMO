@@ -36,10 +36,10 @@ Cycle Solution2Cycles::operator[](std::size_t index){
     return this->cycles[index];
 }
 
-Cycle Solution2Cycles::addCycle(){
+Cycle * Solution2Cycles::addCycle(){
 
     this->cycles.push_back(Cycle());
-    return this->cycles.back();
+    return &this->cycles.back();
 }
 
 bool Solution2Cycles::operator<=(Solution2Cycles & s2c){

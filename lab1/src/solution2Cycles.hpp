@@ -26,7 +26,7 @@ public:
     const std::string getInstanceName();
     const std::string getAlgorithmType();
 
-    Cycle addCycle();
+    Cycle * addCycle();
 
     Cycle operator[](std::size_t);
     bool operator<=(Solution2Cycles &);

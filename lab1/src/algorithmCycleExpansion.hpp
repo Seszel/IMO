@@ -9,6 +9,8 @@ class AlgorithmCycleExpansion : public Algorithm2cycles {
 
 private:
 
+    bool allVisited(std::vector<bool > &);
+
 public:
 
     AlgorithmCycleExpansion(){}

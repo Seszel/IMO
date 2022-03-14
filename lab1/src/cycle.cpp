@@ -29,3 +29,13 @@ void Cycle::addVertex(std::size_t pos, const int vertex){
         this->vertices.insert(this->vertices.begin() + pos, vertex);
     }
 }
+
+void Cycle::pushBackVertex(const int vertex){
+
+    this->vertices.push_back(vertex);
+}
+
+int Cycle::getLength(){
+
+    return this->vertices.size();
+}
