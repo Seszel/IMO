@@ -8,7 +8,7 @@ class Algorithm {
 
 public:
 
-    virtual const Solution & run(const Instance &) = 0;
+    virtual const Solution * run(const Instance *) = 0;
 };
 
 #endif

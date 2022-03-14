@@ -1,9 +1,12 @@
 #include "algorithmCycleExpansion.hpp"
 
-const Solution & Algorithm2cycles::run(const Instance & instance){
+const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance){
 
     Solution2Cycles finalSolution;
 
-    //choose random vertex
-    
+    //choose random startin vertex
+    int randomStart = rand() % instance.dimension;
+
+    //find closest neighbor
+
 }

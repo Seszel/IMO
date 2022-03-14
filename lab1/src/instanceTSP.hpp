@@ -21,12 +21,14 @@ class InstanceTSP : public Instance {
         std::string name;
         std::string type;
         std::string comment;
+        
+    public:
+
         int dimension;
         std::string edgeWeightType;
         std::vector<Point<int > > nodes;
         std::vector<std::vector<int > > matrix;
         
-    public:
         InstanceTSP(){
 
         }

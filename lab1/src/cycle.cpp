@@ -26,6 +26,6 @@ void Cycle::addVertex(std::size_t pos, const int vertex){
         this->vertices.push_back(vertex);
     } else {
 
-        this->vertices.insert(pos, vertex);
+        this->vertices.insert(this->vertices.begin() + pos, vertex);
     }
 }

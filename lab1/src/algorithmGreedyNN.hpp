@@ -13,7 +13,7 @@ public:
 
     virtual ~AlgorithmGreedyNN(){}
 
-    const Solution & run(const Instance &) override;
+    const Solution2Cycles run(const InstanceTSP &) override;
 
     void generateCycles (const Instance &);
 };

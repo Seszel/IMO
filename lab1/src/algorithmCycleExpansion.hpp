@@ -12,7 +12,7 @@ private:
 public:
 
     AlgorithmCycleExpansion(){}
-    const Solution & run(const Instance &) override;
+    const Solution2Cycles run(const InstanceTSP &) override;
 };
 
 #endif
