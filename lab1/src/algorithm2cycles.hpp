@@ -3,7 +3,7 @@
 
 #include "algorithm.hpp"
 
-class Algorithm2cycles : public Algorithm{
+class Algorithm2cycles : public Algorithm {
 
 private:
 
@@ -14,7 +14,7 @@ public:
 
     virtual ~Algorithm2cycles(){}
 
-    const Solution & run(const Instance &) override;
+    virtual const Solution & run(const Instance &) = 0;
 
 };
 
