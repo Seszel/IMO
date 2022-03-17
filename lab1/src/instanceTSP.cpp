@@ -87,6 +87,9 @@ void InstanceTSP::readFromFile(std::string path){
             x2 = pow((nodes[i].x - nodes[j].x), 2);
             y2 = pow((nodes[i].y - nodes[j].y), 2);
             d = (int)(sqrt(x2 + y2) + 0.5);
+            if (d==0) {
+                d = std::numeric_limits<int>::max();
+            }
             temp.push_back(d);
         }
         this->matrix.push_back(temp);
