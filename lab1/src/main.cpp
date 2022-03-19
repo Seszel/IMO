@@ -25,9 +25,9 @@ int main(int argc, char ** argv){
 
     AlgorithmCycleExpansion alg;
 
-    Solution2Cycles solution2cycles = alg.run(instance);
+    Solution2Cycles solutionCycleExpansion = alg.run(instance);
 
-    std::cout << solution2cycles.getTotalCost() << std::endl;
+    std::cout << solutionCycleExpansion.getTotalCost() << std::endl;
 
     Algorithm2Regret alg2regret;
 
