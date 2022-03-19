@@ -12,7 +12,7 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
 
     while(!allVisited(visited)){
 
-        //choose random startin vertex
+        //choose random starting vertex
         int randomStart = rand() % instance.dimension;
         while(visited[randomStart] == true)
             randomStart = rand() % instance.dimension;

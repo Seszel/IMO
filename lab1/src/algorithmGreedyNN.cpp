@@ -1,5 +1,62 @@
 #include "algorithmGreedyNN.hpp"
 
-void generateCycles(){
+const Solution2Cycles AlgorithmGreedyNN::run(const InstanceTSP & instance){
+
+    Solution2Cycles finalSolution;
+
+    std::vector<bool > visited;
+
+    visited.resize(instance.dimension, false);
+
+    int cycleLength = 50;
     
+
+    while(!allVisited(visited)){  
+
+        //choose random starting vertex
+        bool firstVertex = false;
+        int randomStart = rand() % instance.dimension;
+        while(visited[randomStart] == true)
+            randomStart = rand() % instance.dimension; 
+
+        int prevAddedVertex = randomStart;
+        int nextVertex;
+
+        Cycle * currentCycle = finalSolution.addCycle();
+
+        currentCycle->pushBackVertex(randomStart);
+        visited[randomStart] = true;
+
+
+        while(currentCycle->getLength() < cycleLength){
+
+            nextVertex = this->findClosestVertex(prevAddedVertex, instance, visited);
+            visited[nextVertex] = true;
+        
+            currentCycle->pushBackVertex(nextVertex);
+            prevAddedVertex = nextVertex;       
+        }
+
+        currentCycle->pushBackVertex(randomStart);
+        firstVertex = false;
+    }
+
+
+
+    finalSolution.setAlgorithmType("greedy_nearest_neighbour");
+    finalSolution.setInstanceName(instance.getName());
+
+    finalSolution.setInstance(instance);
+
+
+    return finalSolution;
+}
+
+bool AlgorithmGreedyNN::allVisited(std::vector<bool > & visited){
+
+    for(auto i : visited)
+        if(i == false)
+            return false;
+
+    return true;
 }

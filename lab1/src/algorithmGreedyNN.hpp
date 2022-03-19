@@ -7,15 +7,13 @@ class AlgorithmGreedyNN : public Algorithm2cycles {
 
 private:
 
+    bool allVisited(std::vector<bool > &);
+
 public:
 
     AlgorithmGreedyNN(){}
 
-    virtual ~AlgorithmGreedyNN(){}
-
     const Solution2Cycles run(const InstanceTSP &) override;
-
-    void generateCycles (const Instance &);
 };
 
 #endif

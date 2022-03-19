@@ -2,6 +2,7 @@
 #include "algorithmCycleExpansion.hpp"
 #include "solution2Cycles.hpp"
 #include "algorithm2regret.hpp"
+#include "algorithmGreedyNN.hpp"
 
 #include <iostream>
 #include <cstdlib>
@@ -15,6 +16,12 @@ int main(int argc, char ** argv){
     instance.readFromFile("../data/kroa100.tsp");
 
     std::cout << "Data loaded" << std::endl;
+
+    AlgorithmGreedyNN algGreedy;
+
+    Solution2Cycles solutionGreedy = algGreedy.run(instance);
+
+    std::cout << solutionGreedy.getTotalCost() << std::endl;
 
     AlgorithmCycleExpansion alg;
 
