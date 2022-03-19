@@ -2,4 +2,4 @@
 
 ## Zawartość repezytorium
 
-**lab1** - Kod programu dla projektu "Zastosowanie konstrukcyjnych heurystykw optymalizacji zmodyfikowanego problemu TSP"
+**lab1** - Kod programu dla projektu "Zastosowanie konstrukcyjnych heurystyk w optymalizacji zmodyfikowanego problemu TSP"
