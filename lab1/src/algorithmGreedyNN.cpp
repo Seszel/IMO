@@ -37,7 +37,7 @@ const Solution2Cycles AlgorithmGreedyNN::run(const InstanceTSP & instance){
             prevAddedVertex = nextVertex;       
         }
 
-        currentCycle->pushBackVertex(randomStart);
+        // currentCycle->pushBackVertex(randomStart); DODAWAC TEN WIERZCHOLEK, CZY NIE. CZY W LICZENIU KOSZTU JEST UWZGLEDNIANA KRAWEDZ OSTATNI DO PIERWSZEGO?
         firstVertex = false;
     }
 
