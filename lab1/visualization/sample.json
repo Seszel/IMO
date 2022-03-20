@@ -1,6 +1,7 @@
 {
-    "algorithm": {
-        "greedy": {
+    "algorithm": [
+        {
+            "type": "greedy",
             "instance": [
                 {
                     "name": "kroA100",
@@ -22,7 +23,8 @@
                 }
             ]
         },
-        "cycleExpansion": {
+        {
+            "type": "cycleExpansion",
             "instance": [
                 {
                     "name": "kroA100",
@@ -35,5 +37,5 @@
                 }
             ]
         }
-    }
+    ]
 }
