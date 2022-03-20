@@ -17,7 +17,7 @@ const int Cycle::getTotalCost(const InstanceTSP & instance){
     return this->totalCost;
 }
 
-int Cycle::operator[](std::size_t index){
+int Cycle::operator[](int index){
 
     if(index < 0 || index >= this->vertices.size()){
         //raise exception

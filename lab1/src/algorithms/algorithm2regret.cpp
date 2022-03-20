@@ -2,6 +2,14 @@
 
 const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
 
+    struct helper
+    {
+        int vertex;
+        int pos;
+        int cost;
+    };
+    
+
     Solution2Cycles finalSolution;
 
     std::vector<bool > visited;
@@ -38,38 +46,39 @@ const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
             for(int v = 0; v < instance.dimension; v++){
 
                 if(visited[v] == true){
-                    break;
+                    continue;
                 }
 
-                std::vector<std::pair<int, int > > insCosts;
+                std::vector<helper> insCosts;
                 insCosts.resize(currentCycle->getLength());
 
                 for(int insPos = 0; insPos < currentCycle->getLength(); insPos++){
 
-                    int prev = (*currentCycle)[(currentCycle->getLength() + insPos - 1) % currentCycle->getLength()];
+                    int a = (currentCycle->getLength() + insPos - 1) % currentCycle->getLength();
+                    int prev = (*currentCycle)[a];
                     int succ = (*currentCycle)[insPos];
                     int diff = instance.matrix[prev][v] + instance.matrix[v][succ] - instance.matrix[prev][succ];
 
-                    insCosts[v] = {v, diff};
+                    insCosts[insPos] = {v, insPos, diff};
                 }
 
-                std::sort(insCosts.begin(), insCosts.end(), [](const std::pair<int, int> & a, const std::pair<int, int> & b) -> bool{
-                    return a.second < b.second;
+                std::sort(insCosts.begin(), insCosts.end(), [](const helper & a, const helper & b) -> bool{
+                    return a.cost < b.cost;
                 });
 
-                int regret = insCosts[1].second - insCosts.front().second;
+                int regret = insCosts[1].cost - insCosts.front().cost;
                 if(regret > maxRegret){
                     maxRegret = regret;
-                    pos = insCosts.front().first;
-                    cost = insCosts.front().second;
-                    next = v;
+                    pos = insCosts.front().pos;
+                    cost = insCosts.front().cost;
+                    next = insCosts.front().vertex;
                 } else if(regret == maxRegret){
                     
-                    if(insCosts.front().second < cost){
+                    if(insCosts.front().cost < cost){
                         maxRegret = regret;
-                        pos = insCosts.front().first;
-                        cost = insCosts.front().second;
-                        next = v;
+                        pos = insCosts.front().pos;
+                        cost = insCosts.front().cost;
+                        next = insCosts.front().vertex;
                     }
                 }
             }

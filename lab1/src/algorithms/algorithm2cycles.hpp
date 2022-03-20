@@ -19,6 +19,7 @@ public:
     virtual ~Algorithm2cycles(){}
 
     virtual const Solution2Cycles run(const InstanceTSP &) = 0;
+    virtual const std::string getName() = 0;
 
     int findClosestVertex(int, const InstanceTSP &, std::vector<bool > &);
 };

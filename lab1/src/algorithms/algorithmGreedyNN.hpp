@@ -11,9 +11,12 @@ private:
 
 public:
 
+    const std::string name = "greedy";
+
     AlgorithmGreedyNN(){}
 
     const Solution2Cycles run(const InstanceTSP &) override;
+    const std::string getName() override{ return name;}
 };
 
 #endif

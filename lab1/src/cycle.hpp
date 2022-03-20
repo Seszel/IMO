@@ -19,7 +19,7 @@ public:
     }
 
     const int getTotalCost(const InstanceTSP &);
-    int operator[](std::size_t);
+    int operator[](int);
     void removeVertex(std::size_t);
     void addVertex(std::size_t, const int);
 

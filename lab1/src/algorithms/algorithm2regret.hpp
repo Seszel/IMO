@@ -15,9 +15,12 @@ private:
 
 public:
 
+    const std::string name = "2regret";
+
     Algorithm2Regret(){}
 
     const Solution2Cycles run(const InstanceTSP &) override;
+    const std::string getName() override{ return name;}
 };
 
 #endif

@@ -57,21 +57,21 @@ const std::string Solution2Cycles::saveAsJson(){
     json data;
     data["type"] = this->algorithmType;
     data["instance"]["name"] = this->instanceName;
-    std::vector<std::vector<std::vector<int > > > points;
+    std::vector<std::vector<int > > points;
     std::vector<std::vector<std::vector<int > > > edges;
-
+    
+    for(int j = 0; j < instance->dimension; j++){
+        points.push_back({});
+        points[j].push_back(instance->nodes[j].x);
+        points[j].push_back(instance->nodes[j].y);
+    }
     for(int i = 0; i < this->cycles.size(); i++){
 
-        points.push_back({});
         edges.push_back({});
         //for each cycle construct points and edges arrays
         int cycLen = this->cycles[i].getLength();
         for(int j = 0; j < cycLen; j++){
-
-            points[i].push_back({});
             edges[i].push_back({});
-            points[i][j].push_back(this->instance->nodes[j].x);
-            points[i][j].push_back(this->instance->nodes[j].y);
 
             int pred = this->cycles[i][j];
             int succ = this->cycles[i][(j + 1) % cycLen];
@@ -84,7 +84,7 @@ const std::string Solution2Cycles::saveAsJson(){
 
     for(int i = 0; i < this->cycles.size(); i++){
 
-        data["instance"]["cycle"][i]["points"] = points[i];
+        data["instance"]["cycle"][i]["points"] = points;
         data["instance"]["cycle"][i]["edges"] = edges[i];
     }
 

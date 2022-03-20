@@ -16,67 +16,68 @@ int main(){
 
     Solution2Cycles solution;
 
-    std::fstream fileA, fileB;
-    fileA.open("../resultFiles/test.json", std::ios::out);
+    std::fstream file;
+    file.open("../resultFiles/test.json", std::ios::out);
+
+    std::vector<Algorithm2cycles *> algs;
+    algs.push_back(new AlgorithmGreedyNN());
+    algs.push_back(new AlgorithmCycleExpansion());
+    algs.push_back(new Algorithm2Regret());
 
     //load instances
-    InstanceTSP instanceA, instanceB;
-    instanceA.readFromFile("/home/piotr/Dokumenty/SI/imo/IMO/lab1/data/kroa100.tsp");
-    instanceB.readFromFile("/home/piotr/Dokumenty/SI/imo/IMO/lab1/data/krob100.tsp");
+    std::vector<InstanceTSP> instances;instances.resize(2);
+    instances[0].readFromFile("/home/piotr/Dokumenty/SI/imo/IMO/lab1/data/kroa100.tsp");
+    instances[1].readFromFile("/home/piotr/Dokumenty/SI/imo/IMO/lab1/data/krob100.tsp");
     std::cout << "Data loaded." << std::endl;
 
     json algorithmsData;
 
-    std::vector<json> instances;
+    algorithmsData["algorithm"] = {};
 
-    json algorithmGreedy, algorithmExpansion, algorithmRegret;
-    algorithmGreedy["type"] = "greedy";
-    algorithmExpansion["type"] = "cycle_expansion";
-    algorithmRegret["type"] = "regret";
-
-
+    Solution2Cycles best;
     //generate results for greedy
-    for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+    for(auto algorithm : algs){
 
-        AlgorithmGreedyNN greedy;
-        solution = greedy.run(instanceA);
+        std::vector<json> tmp;
 
-        auto res = json::parse(solution.saveAsJson());
+        for(auto & instance : instances){
 
-        instances.push_back(res["instance"]);
+            int min = 1e9;
+            int max = -1;
+            int avg = 0;
+            
+            for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+
+                Solution2Cycles s = algorithm->run(instance);
+
+                int cost = s.getTotalCost();
+                if(cost < min){
+
+                    best = s;
+                    min = cost;
+                }
+                avg += cost;
+                if(cost > max){
+
+                    max = cost;
+                }                
+            }
+            avg /= NUMBER_OF_ITERATIONS;
+            auto best_json = json::parse(best.saveAsJson());
+
+            best_json["instance"]["avg"] = avg;
+            best_json["instance"]["min"] = min;
+            best_json["instance"]["max"] = max;
+            tmp.push_back(best_json["instance"]);
+        }
+        json h;
+        h["instance"] = tmp;
+        h["type"] = algorithm->getName();
+        algorithmsData["algorithm"].push_back(h);
     }
-    algorithmGreedy["instance"] = instances;
-    algorithmsData["algorithm"].push_back(algorithmGreedy);
-        
-    instances.clear();instances.shrink_to_fit();
-    for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
 
-        AlgorithmCycleExpansion cycleExpansion;
-        solution = cycleExpansion.run(instanceA);
-
-        auto res = json::parse(solution.saveAsJson());
-
-        instances.push_back(res["instance"]);
-    }
-    algorithmExpansion["instance"] = instances;
-    algorithmsData["algorithm"].push_back(algorithmExpansion);
-
-    instances.clear();instances.shrink_to_fit();
-
-    // for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
-
-    //     Algorithm2Regret regret;
-    //     solution = regret.run(instanceA);
-
-    //     auto res = json::parse(solution.saveAsJson());
-
-    //     instances.push_back(res["instance"]);
-    // }
-    // algorithmRegret["instance"] = instances;
-    // algorithmsData["algorithm"].push_back(algorithmRegret);
-
-    fileA << algorithmsData.dump();
-    fileA.close();
+    file << algorithmsData.dump();
+    file.close();
 
     return 0;
 }
