@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/AsiaPiotrekCompany_run.dir/main.cpp.o  -o AsiaPiotrekCompany_run src/libAlgorithm_lib.a 

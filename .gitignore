@@ -1,1 +1,4 @@
 *.o
+lab1/debug
+lab1/build
+.vscode
