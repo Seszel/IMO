@@ -4,10 +4,14 @@
 #include "solution.hpp"
 #include "../cycle.hpp"
 #include "../instances/instanceTSP.hpp"
+#include "../../lib/json/single_include/nlohmann/json.hpp"
 #include <vector>
 #include <algorithm>
 #include <string>
 #include <exception>
+
+using namespace nlohmann;
+
 
 class Solution2Cycles : public Solution {
 

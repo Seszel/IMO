@@ -5,7 +5,7 @@
 
 int main(int argc, char ** argv){
     InstanceTSP instance;
-    instance.readFromFile("../data/kroa100.tsp");
+    instance.readFromFile("/home/piotr/Dokumenty/SI/imo/IMO/lab1/data/kroa100.tsp");
 
     std::cout << "Data loaded" << std::endl;
 
@@ -13,6 +13,8 @@ int main(int argc, char ** argv){
     auto solution = greedyNN.run(instance);
 
     std::cout << solution.getTotalCost() << std::endl;
+
+    std::cout << solution.saveAsJson() << std::endl;
 
     return 0;
 }
