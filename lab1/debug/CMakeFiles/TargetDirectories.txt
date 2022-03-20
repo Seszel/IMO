@@ -1,0 +1,6 @@
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/debug/CMakeFiles/rebuild_cache.dir
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/debug/CMakeFiles/AsiaPiotrekCompany_run.dir
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/debug/CMakeFiles/edit_cache.dir
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/debug/src/CMakeFiles/rebuild_cache.dir
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/debug/src/CMakeFiles/Algorithm_lib.dir
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/debug/src/CMakeFiles/edit_cache.dir
