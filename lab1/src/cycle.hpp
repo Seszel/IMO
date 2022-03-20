@@ -1,11 +1,7 @@
 #ifndef CYCLE_HPP
 #define CYCLE_HPP
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1886f2620aa0ebad19b2eea334a92f2c6774ab83
-#include "instanceTSP.hpp"
+#include "instances/instanceTSP.hpp"
 #include <vector>
 #include <string>
 

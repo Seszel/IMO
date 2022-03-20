@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/main.cpp
+src/instances/instanceTSP.hpp
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/src/instances/instanceTSP.hpp
+iostream
+-
+
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/src/instances/instance.hpp
+fstream
+-
+string
+-
+
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/src/instances/instanceTSP.hpp
+instance.hpp
+/home/piotr/Dokumenty/SI/imo/IMO/lab1/src/instances/instance.hpp
+vector
+-
+iostream
+-
+string
+-
+regex
+-
+cmath
+-
+limits
+-
+

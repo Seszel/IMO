@@ -1,12 +1,11 @@
 #ifndef ALGORITHM_2_CYCLES_HPP
 #define ALGORITHM_2_CYCLES_HPP
 
-#include "instanceTSP.hpp"
-#include "solution2Cycles.hpp"
+#include "../instances/instanceTSP.hpp"
+#include "../solutions/solution2Cycles.hpp"
 #include "algorithm.hpp"
 #include <algorithm>
 #include <vector>
-
 
 class Algorithm2cycles : public Algorithm {
 

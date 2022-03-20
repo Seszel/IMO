@@ -1,4 +1,4 @@
-#include "instanceTSP.hpp"
+#include "src/instances/instanceTSP.hpp"
 
 #include <iostream>
 
