@@ -1,7 +1,10 @@
 #ifndef CYCLE_HPP
 #define CYCLE_HPP
 
+
+#include "instanceTSP.hpp"
 #include <vector>
+#include <string>
 
 class Cycle{
 
@@ -21,6 +24,8 @@ public:
 
     void pushBackVertex(const int);
     int getLength();
+
+    const std::string cycleToJsonList(const InstanceTSP *);
 };
 
 #endif

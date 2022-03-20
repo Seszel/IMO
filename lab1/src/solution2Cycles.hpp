@@ -3,6 +3,7 @@
 
 #include "solution.hpp"
 #include "cycle.hpp"
+#include "instanceTSP.hpp"
 #include <vector>
 #include <algorithm>
 #include <string>
@@ -17,6 +18,8 @@ private:
     std::vector<Cycle > cycles;
     std::vector<int> cycleLengths;
 
+    const InstanceTSP * instance;
+
 public:
 
     Solution2Cycles(){}
@@ -25,12 +28,15 @@ public:
     void setAlgorithmType(const std::string);
     const std::string getInstanceName();
     const std::string getAlgorithmType();
+    void setInstance(const InstanceTSP &);
 
     Cycle * addCycle();
 
     Cycle operator[](std::size_t);
     bool operator<=(Solution2Cycles &);
     bool operator>=(Solution2Cycles &);
+
+    const std::string saveAsJson();
 };
 
 #endif

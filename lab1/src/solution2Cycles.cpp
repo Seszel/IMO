@@ -51,3 +51,13 @@ bool Solution2Cycles::operator>=(Solution2Cycles & s2c){
 
     return this->getTotalCost() >= s2c.getTotalCost();
 }
+
+const std::string Solution2Cycles::saveAsJson(){
+
+    
+}
+
+void Solution2Cycles::setInstance(const InstanceTSP & instance){
+
+    this->instance = &instance;
+}

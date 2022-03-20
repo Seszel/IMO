@@ -39,3 +39,26 @@ int Cycle::getLength(){
 
     return this->vertices.size();
 }
+
+const std::string Cycle::cycleToJsonList(const InstanceTSP * instance){
+
+    std::string out = "";
+    out += "[";
+
+    for(int i = 0; i < this->getLength(); i++){
+
+        int prev = i;        
+        int succ = (i + 1) % this->getLength();
+
+        out += "[" + std::to_string(this->vertices[prev]) + ", " + 
+            std::to_string(this->vertices[succ]) + ", " + std::to_string(instance->matrix[prev][succ]) + "]";
+
+        if(i < this->getLength() - 1){
+            out += ", ";
+        }
+    }
+
+    out += "]";
+
+    return out;
+}
