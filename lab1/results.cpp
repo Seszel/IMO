@@ -8,7 +8,7 @@
 
 using namespace nlohmann;
 
-const int NUMBER_OF_ITERATIONS = 3;
+const int NUMBER_OF_ITERATIONS = 100;
 
 int main(){
 
@@ -17,7 +17,7 @@ int main(){
     Solution2Cycles solution;
 
     std::fstream fileA, fileB;
-    fileA.open("test.json", std::ios::out);
+    fileA.open("../resultFiles/test.json", std::ios::out);
 
     //load instances
     InstanceTSP instanceA, instanceB;
@@ -63,17 +63,17 @@ int main(){
 
     instances.clear();instances.shrink_to_fit();
 
-    for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+    // for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
 
-        Algorithm2Regret regret;
-        solution = regret.run(instanceA);
+    //     Algorithm2Regret regret;
+    //     solution = regret.run(instanceA);
 
-        auto res = json::parse(solution.saveAsJson());
+    //     auto res = json::parse(solution.saveAsJson());
 
-        instances.push_back(res["instance"]);
-    }
-    algorithmRegret["instance"] = instances;
-    algorithmsData["algorithm"].push_back(algorithmRegret);
+    //     instances.push_back(res["instance"]);
+    // }
+    // algorithmRegret["instance"] = instances;
+    // algorithmsData["algorithm"].push_back(algorithmRegret);
 
     fileA << algorithmsData.dump();
     fileA.close();
