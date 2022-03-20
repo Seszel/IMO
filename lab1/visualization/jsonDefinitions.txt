@@ -1,0 +1,4 @@
+
+"points": [[1,2],[3,5],[4,8],[5,0]], TO OZNACZA WSPÓŁRZĘDNE PUNKTÓW (x, y)
+"edges": [[0,1,8], [1,3,2], [3,2,8], [2,0,10]] TO OZNACZA KRAWEDZ WIERZCHOŁEK1 DO WIERZCHOŁEK2 I WAGA (v1,v2,weight)
+Możliwe, że potrzebne tez okreslenie min i maxymalnej wartosci x i y, zeby ladnie rozrysowac graf na osi wspolrzednych

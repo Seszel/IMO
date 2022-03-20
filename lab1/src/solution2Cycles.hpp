@@ -18,7 +18,11 @@ private:
     std::vector<Cycle > cycles;
     std::vector<int> cycleLengths;
 
+<<<<<<< HEAD
     const InstanceTSP * instance;
+=======
+    const InstanceTSP * instance = nullptr;
+>>>>>>> 1886f2620aa0ebad19b2eea334a92f2c6774ab83
 
 public:
 
@@ -35,8 +39,12 @@ public:
     Cycle operator[](std::size_t);
     bool operator<=(Solution2Cycles &);
     bool operator>=(Solution2Cycles &);
+<<<<<<< HEAD
 
     const std::string saveAsJson();
+=======
+    void setInstance(const InstanceTSP &);
+>>>>>>> 1886f2620aa0ebad19b2eea334a92f2c6774ab83
 };
 
 #endif

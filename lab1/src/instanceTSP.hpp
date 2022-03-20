@@ -8,6 +8,7 @@
 #include <string>
 #include <regex>
 #include <cmath>
+#include <limits>
 
 template <typename T>
 struct Point{
@@ -41,6 +42,7 @@ class InstanceTSP : public Instance {
 
         void readFromFile(std::string path) override;
         void writeData() override;
+        const std::string getName() const;
 
 };
 

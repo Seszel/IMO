@@ -12,7 +12,7 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
 
     while(!allVisited(visited)){
 
-        //choose random startin vertex
+        //choose random starting vertex
         int randomStart = rand() % instance.dimension;
         while(visited[randomStart] == true)
             randomStart = rand() % instance.dimension;
@@ -56,8 +56,14 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
             }
 
             currentCycle->addVertex(pos, next);
+            visited[next]= true;
         }
     }
+
+    finalSolution.setAlgorithmType("cycle_expansion");
+    finalSolution.setInstanceName(instance.getName());
+
+    finalSolution.setInstance(instance);
 
     return finalSolution;
 }
