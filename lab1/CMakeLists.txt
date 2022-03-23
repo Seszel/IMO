@@ -10,8 +10,10 @@ include_directories(src)
 
 add_subdirectory(src)
 
-add_executable(AsiaPiotrekCompany_run main.cpp)
-add_executable(AsiaPiotrekResults_run results.cpp)
+add_executable(AsiaPiotrekCompany_run main_lab1.cpp)
+add_executable(AsiaPiotrekResults_run results_lab1.cpp)
+
+add_executable(AsiaPiotrekTeam_run main_lab2.cpp)
 
 target_link_libraries(AsiaPiotrekCompany_run PUBLIC Algorithm_lib)
 target_link_libraries(AsiaPiotrekResults_run PUBLIC Algorithm_lib)

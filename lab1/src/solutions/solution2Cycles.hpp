@@ -26,6 +26,10 @@ private:
 
 public:
 
+    static const int SWAP_2_EDGES = 0;
+    static const int SWAP_2_VERTICES = 1;
+    static const int SWAP_BETWEEN_CYCLES = 2;
+
     Solution2Cycles(){}
     const int getTotalCost();
     void setInstanceName(const std::string);
@@ -39,6 +43,10 @@ public:
     Cycle operator[](std::size_t);
     bool operator<=(Solution2Cycles &);
     bool operator>=(Solution2Cycles &);
+
+    void swapVerticesBetweenCycles(const int, const int);
+    void swap2Edges(const int, const int, Cycle *);
+    void swap2VerticesInCycle(const int, const int, Cycle *);
 
     const std::string saveAsJson();
 };

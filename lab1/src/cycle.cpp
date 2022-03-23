@@ -74,3 +74,22 @@ const std::string Cycle::cycleToJsonList(const InstanceTSP * instance){
 
     return out;
 }
+
+void Cycle::swap2Edges(const int a, const int b){
+
+    int n_of_swaps = (abs(a - b) + 1) /2;
+
+    int s = this->vertices.size();
+
+    for(int i = 0; i < n_of_swaps; i++){
+
+        int am = (a + i) % s;
+        int bm = (s + b - i) % s;
+        std::swap(this->vertices[am], this->vertices[bm]);
+    }
+}
+
+void Cycle::swap2Vertices(const int a, const int b){
+
+    std::swap(this->vertices[a], this->vertices[b]);
+}

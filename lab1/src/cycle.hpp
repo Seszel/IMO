@@ -27,6 +27,9 @@ public:
     int getLength();
 
     const std::string cycleToJsonList(const InstanceTSP *);
+
+    void swap2Edges(const int, const int);
+    void swap2Vertices(const int, const int);
 };
 
 #endif

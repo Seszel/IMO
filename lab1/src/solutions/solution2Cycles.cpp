@@ -95,3 +95,13 @@ void Solution2Cycles::setInstance(const InstanceTSP & instance){
 
     this->instance = &instance;
 }
+
+void swap2Edges(const int a, const int b, Cycle * cycle){
+
+    cycle->swap2Edges(a, b);
+}
+
+void swap2VerticesInCycle(const int a, const int b, Cycle * cycle){
+
+    cycle->swap2Vertices(a, b);
+}
