@@ -1,4 +1,4 @@
 *.o
-lab1/debug/
-lab1/build/
+lab/debug/
+lab/build/
 .vscode
