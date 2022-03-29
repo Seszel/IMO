@@ -6,4 +6,9 @@ const Solution2Cycles AlgorithmLocalGreedy::run(const InstanceTSP &){
     Solution2Cycles currentSolution = Solution2Cycles(*this->startingSolution);
 
     bool improvementFound = false;
+
+    while(!improvementFound){
+
+        
+    }
 }

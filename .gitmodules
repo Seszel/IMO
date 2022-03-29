@@ -1,1 +1,4 @@
 
+[submodule "lab/lib/json"]
+	path = lab/lib/json
+	url = https://github.com/nlohmann/json.git
