@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/AsiaPiotrekTeam_run.dir/main_lab2.cpp.o  -o AsiaPiotrekTeam_run src/libAlgorithm_lib.a 

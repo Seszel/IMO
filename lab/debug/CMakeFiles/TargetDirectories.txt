@@ -1,0 +1,8 @@
+/home/czewian/SI/imo/IMO/lab/debug/CMakeFiles/AsiaPiotrekTeam_run.dir
+/home/czewian/SI/imo/IMO/lab/debug/CMakeFiles/edit_cache.dir
+/home/czewian/SI/imo/IMO/lab/debug/CMakeFiles/AsiaPiotrekCompany_run.dir
+/home/czewian/SI/imo/IMO/lab/debug/CMakeFiles/rebuild_cache.dir
+/home/czewian/SI/imo/IMO/lab/debug/CMakeFiles/AsiaPiotrekResults_run.dir
+/home/czewian/SI/imo/IMO/lab/debug/src/CMakeFiles/rebuild_cache.dir
+/home/czewian/SI/imo/IMO/lab/debug/src/CMakeFiles/Algorithm_lib.dir
+/home/czewian/SI/imo/IMO/lab/debug/src/CMakeFiles/edit_cache.dir
