@@ -112,3 +112,19 @@ void  Solution2Cycles::swapVerticesBetweenCycles(const int a, const int b){
     this->cycles[0][a] = this->cycles[1][b];
     this->cycles[1][b] = tmp;
 }
+
+void Solution2Cycles::makeMove(const int type, const int a, const int b, Cycle * c){
+
+    if(type == Solution2Cycles::SWAP_2_EDGES){
+
+        this->swap2Edges(a, b, c);
+    }
+    else if(type == Solution2Cycles::SWAP_2_VERTICES){
+
+        this->swap2VerticesInCycle(a, b, c);
+    }
+    else if(type == Solution2Cycles::SWAP_BETWEEN_CYCLES){
+
+        this->swapVerticesBetweenCycles(a, b);
+    }
+}

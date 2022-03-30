@@ -36,5 +36,11 @@ int main(int argc, char ** argv){
 
     std::cout << greedySolution.getTotalCost() << std::endl;
 
+    AlgorithmLocalSteepest localSteepest(&solution);
+
+    auto steepSolution = localSteepest.run(instance);
+
+    std::cout << steepSolution.getTotalCost() << std::endl;
+
     return 0;
 }

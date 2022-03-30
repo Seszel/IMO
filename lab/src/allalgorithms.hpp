@@ -6,5 +6,6 @@
 #include "algorithms/algorithmCycleExpansion.hpp"
 #include "algorithms/algorithmBlindRunner.hpp"
 #include "algorithms/algorithmLocalGreedy.hpp"
+#include "algorithms/algorithmLocalSteepest.hpp"
 
 #endif

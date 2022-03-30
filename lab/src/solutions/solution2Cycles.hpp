@@ -13,7 +13,6 @@
 
 using namespace nlohmann;
 
-
 class Solution2Cycles : public Solution {
 
 private:
@@ -48,6 +47,7 @@ public:
     void swapVerticesBetweenCycles(const int, const int);
     void swap2Edges(const int, const int, Cycle *);
     void swap2VerticesInCycle(const int, const int, Cycle *);
+    void makeMove(const int, const int, const int, Cycle *);
 
     const std::string saveAsJson();
 };

@@ -61,3 +61,58 @@ std::vector<Move> Algorithm2cycles::getMoves(Solution2Cycles & currentSolution, 
 
     return moves;
 }
+
+const int Algorithm2cycles::calculateCostAfterMove(Solution2Cycles & currentSolution, const Move move){
+
+    int value = 0;
+
+    if(move.type == Solution2Cycles::SWAP_2_EDGES){
+
+        currentSolution.swap2Edges(
+            move.a,
+            move.b,
+            &currentSolution[move.cyc_num]
+        );
+
+        value = currentSolution.getTotalCost();
+
+        currentSolution.swap2Edges(
+            move.a,
+            move.b,
+            &currentSolution[move.cyc_num]
+        );
+    }
+    else if(move.type == Solution2Cycles::SWAP_2_VERTICES){
+
+        currentSolution.swap2VerticesInCycle(
+            move.a,
+            move.b,
+            &currentSolution[move.cyc_num]
+        );
+
+        value = currentSolution.getTotalCost();
+
+        currentSolution.swap2VerticesInCycle(
+            move.a,
+            move.b,
+            &currentSolution[move.cyc_num]
+        );
+
+    }
+    else if(move.type == Solution2Cycles::SWAP_BETWEEN_CYCLES){
+
+        currentSolution.swapVerticesBetweenCycles(
+            move.a,
+            move.b
+        );
+
+        value = currentSolution.getTotalCost();
+
+        currentSolution.swapVerticesBetweenCycles(
+            move.a,
+            move.b
+        );
+    }
+
+    return value;
+}

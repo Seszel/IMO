@@ -30,6 +30,7 @@ public:
 
     int findClosestVertex(int, const InstanceTSP &, std::vector<bool > &);
     std::vector<Move> getMoves(Solution2Cycles &, std::vector<int>);
+    const int calculateCostAfterMove(Solution2Cycles &, const Move);
 };
 
 #endif
