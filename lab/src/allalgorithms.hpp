@@ -5,5 +5,6 @@
 #include "algorithms/algorithm2regret.hpp"
 #include "algorithms/algorithmCycleExpansion.hpp"
 #include "algorithms/algorithmBlindRunner.hpp"
+#include "algorithms/algorithmLocalGreedy.hpp"
 
 #endif

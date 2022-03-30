@@ -10,6 +10,7 @@
 struct Move {
     int a;
     int b;
+    int cyc_num;
     int type;
 };
 

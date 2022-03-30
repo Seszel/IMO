@@ -7,7 +7,7 @@
 #include "../allsolutions.hpp"
 
 #include <vector>
-#include <algorithm.hpp>
+#include <algorithm>
 
 class AlgorithmLocalGreedy : public Algorithm2cycles{
 

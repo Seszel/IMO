@@ -30,5 +30,11 @@ int main(int argc, char ** argv){
 
     std::cout << blind_solution.getTotalCost() << std::endl;
 
+    AlgorithmLocalGreedy algGreedy(&solution);
+
+    auto greedySolution = algGreedy.run(instance);
+
+    std::cout << greedySolution.getTotalCost() << std::endl;
+
     return 0;
 }
