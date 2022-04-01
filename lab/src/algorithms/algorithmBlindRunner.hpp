@@ -1,17 +1,18 @@
 #ifndef ALGORITHM_BLIND_RUNNER_HPP
 #define ALGORITHM_BLIND_RUNNER_HPP
 
-#include "algorithm2cycles.hpp"
+#include "algorithm2cyclesMeta.hpp"
 #include "../allsolutions.hpp"
 #include "../allinstances.hpp"
 
-class AlgorithmBlindRunner : public Algorithm2cycles{
+class AlgorithmBlindRunner : public Algorithm2cyclesMeta {
 
 private:
 
-    Solution2Cycles * startSolution = nullptr;
+    const Solution2Cycles * startSolution = nullptr;
     int MAX_ITERATIONS = 1e4;
     Solution2Cycles * bestFoundSolution = nullptr;
+    std::vector<int> availableMoveTypes;
 
 public:
 
@@ -27,6 +28,8 @@ public:
 
     const Solution2Cycles run(const InstanceTSP &) override;
     const std::string getName() override { return "blind_runner";}
+    void setAvailableMoveTypes(std::vector<int>) override;
+    void setStartingSolution(const Solution2Cycles *) override;
 };
 
 #endif

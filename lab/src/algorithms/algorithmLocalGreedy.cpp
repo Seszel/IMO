@@ -12,9 +12,7 @@ const Solution2Cycles AlgorithmLocalGreedy::run(const InstanceTSP &){
         improvementFound = false;
 
         // get available moves
-        auto moves = this->getMoves(currentSolution, {
-            Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_2_VERTICES, Solution2Cycles::SWAP_BETWEEN_CYCLES
-        });
+        auto moves = this->getMoves(currentSolution, this->availableMoveTypes);
 
         // shuffle moves to obtain random sequence
         std::random_shuffle(moves.begin(), moves.end());
@@ -89,4 +87,9 @@ const Solution2Cycles AlgorithmLocalGreedy::run(const InstanceTSP &){
     }
 
     return currentSolution;
+}
+
+void AlgorithmLocalGreedy::setAvailableMoveTypes(std::vector<int> types){
+
+    this->availableMoveTypes = types;
 }

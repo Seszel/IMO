@@ -24,6 +24,8 @@ private:
 
     const InstanceTSP * instance = nullptr;
 
+    int totalCost = 0;
+
 public:
 
     static const int SWAP_2_EDGES = 0;

@@ -12,9 +12,7 @@ const Solution2Cycles AlgorithmLocalSteepest::run(const InstanceTSP &){
         improvementFound = false;
 
         // get available moves
-        auto moves = this->getMoves(currentSolution, {
-            Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_2_VERTICES, Solution2Cycles::SWAP_BETWEEN_CYCLES
-        });
+        auto moves = this->getMoves(currentSolution, this->availableMoveTypes);
 
         // find best move that minimizes objective function
         Move best_move;
@@ -43,4 +41,9 @@ const Solution2Cycles AlgorithmLocalSteepest::run(const InstanceTSP &){
     }
 
     return currentSolution;
+}
+
+void AlgorithmLocalSteepest::setAvailableMoveTypes(std::vector<int> types){
+
+    this->availableMoveTypes = types;
 }

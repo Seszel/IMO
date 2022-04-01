@@ -48,8 +48,8 @@ std::vector<Move> Algorithm2cycles::getMoves(Solution2Cycles & currentSolution, 
         else if(type == Solution2Cycles::SWAP_2_EDGES){
 
             for(int cn = 0; cn < 2; cn++){
-                for(int a = 0; a < currentSolution[cn].getLength() - 1; a++){
-                    for(int b = a + 1; b < currentSolution[cn].getLength(); b++){
+                for(int a = 0; a < currentSolution[cn].getLength() - 2; a++){
+                    for(int b = a + 2; b < currentSolution[cn].getLength(); b++){
                         moves.push_back({
                             a,b,cn,type
                         });

@@ -11,11 +11,13 @@ private:
 
     std::vector<int > vertices;
     int totalCost;
+    const InstanceTSP * instance = nullptr;
 
 public:
 
-    Cycle(){
+    Cycle(const InstanceTSP & i){
         this->totalCost = 0;
+        this->instance = &i;
     }
 
     const int getTotalCost(const InstanceTSP &);
@@ -30,6 +32,8 @@ public:
 
     void swap2Edges(const int, const int);
     void swap2Vertices(const int, const int);
+
+    friend class Solution2Cycles;
 };
 
 #endif

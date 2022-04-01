@@ -7,5 +7,6 @@
 #include "algorithms/algorithmBlindRunner.hpp"
 #include "algorithms/algorithmLocalGreedy.hpp"
 #include "algorithms/algorithmLocalSteepest.hpp"
+#include "algorithms/algorithmRandom.hpp"
 
 #endif

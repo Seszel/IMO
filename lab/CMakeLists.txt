@@ -14,7 +14,9 @@ add_executable(AsiaPiotrekCompany_run main_lab1.cpp)
 add_executable(AsiaPiotrekResults_run results_lab1.cpp)
 
 add_executable(AsiaPiotrekTeam_run main_lab2.cpp)
+add_executable(AsiaPiotrekResultsLab2_run results_lab2.cpp)
 
 target_link_libraries(AsiaPiotrekCompany_run PUBLIC Algorithm_lib)
 target_link_libraries(AsiaPiotrekResults_run PUBLIC Algorithm_lib)
 target_link_libraries(AsiaPiotrekTeam_run PUBLIC Algorithm_lib)
+target_link_libraries(AsiaPiotrekResultsLab2_run PUBLIC Algorithm_lib)

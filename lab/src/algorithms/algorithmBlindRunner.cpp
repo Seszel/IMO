@@ -46,3 +46,13 @@ const Solution2Cycles AlgorithmBlindRunner::run(const InstanceTSP & instance){
 
     return bestSolution;
 }
+
+void AlgorithmBlindRunner::setAvailableMoveTypes(std::vector<int> types){
+
+    this->availableMoveTypes = types;
+}
+
+void AlgorithmBlindRunner::setStartingSolution(const Solution2Cycles * solution){
+
+    this->startSolution = solution;
+}

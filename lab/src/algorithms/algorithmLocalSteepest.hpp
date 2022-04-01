@@ -1,7 +1,7 @@
 #ifndef ALGORITHM_LOCAL_STEEPEST_HPP
 #define ALGORITHM_LOCAL_STEEPEST_HPP
 
-#include "algorithm2cycles.hpp"
+#include "algorithm2cyclesMeta.hpp"
 #include "../allinstances.hpp"
 #include "../allsolutions.hpp"
 
@@ -11,14 +11,20 @@
 #include <string>
 
 
-class AlgorithmLocalSteepest : public Algorithm2cycles{
+class AlgorithmLocalSteepest : public Algorithm2cyclesMeta{
 
 private:
 
-    const Solution2Cycles * startSolution = nullptr;
+
     Solution2Cycles * bestSolution = nullptr;
+    const Solution2Cycles * startSolution = nullptr;
+
+    std::vector<int> availableMoveTypes = {
+        Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_2_VERTICES, Solution2Cycles::SWAP_BETWEEN_CYCLES
+    };
 
 public:
+    
 
     AlgorithmLocalSteepest(const Solution2Cycles * startSolution){
 
@@ -34,6 +40,8 @@ public:
 
     const Solution2Cycles run(const InstanceTSP &) override;
     const std::string getName() override { return "local_steepest";}
+    void setAvailableMoveTypes(std::vector<int>);
+    void setStartingSolution(const Solution2Cycles * s){ this->startSolution = s; }
 };
 
 #endif

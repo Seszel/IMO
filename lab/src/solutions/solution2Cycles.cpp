@@ -4,7 +4,7 @@ const int Solution2Cycles::getTotalCost(){
 
     int sum = 0;
     for(int i = 0; i < this->cycles.size(); i ++)
-        sum += this->cycles[i].getTotalCost(*this->instance);
+        sum += this->cycleLengths[i];
 
     return sum;
 }
@@ -38,7 +38,7 @@ Cycle & Solution2Cycles::operator[](std::size_t index){
 
 Cycle * Solution2Cycles::addCycle(){
 
-    this->cycles.push_back(Cycle());
+    this->cycles.push_back(Cycle(*this->instance));
     return &this->cycles.back();
 }
 
@@ -108,9 +108,27 @@ void Solution2Cycles::swap2VerticesInCycle(const int a, const int b, Cycle * cyc
 
 void  Solution2Cycles::swapVerticesBetweenCycles(const int a, const int b){
 
+    int del_edges_c0, del_edges_c1, ins_edges_c1, ins_edges_c0;
+    int c0 = this->cycles[0].getLength();
+    int c1 = this->cycles[1].getLength();
+
+    int a_prev = cycles[0][(c0 + a - 1) % c0];
+    int a_succ = cycles[0][(c0 + a + 1) % c0];
+    int b_prev = cycles[1][(c1 + b - 1) % c1];
+    int b_succ = cycles[1][(c1 + b + 1) % c1];
+
+    del_edges_c0 = this->instance->matrix[a_prev][a] + this->instance->matrix[a][a_succ];
+    del_edges_c1 = this->instance->matrix[b_prev][b] + this->instance->matrix[b][b_succ];
+
+    ins_edges_c0 = this->instance->matrix[a_prev][b] + this->instance->matrix[b][a_succ];
+    ins_edges_c1 = this->instance->matrix[b_prev][a] + this->instance->matrix[a][b_succ];
+
     auto tmp = this->cycles[0][a];
     this->cycles[0][a] = this->cycles[1][b];
     this->cycles[1][b] = tmp;
+
+    this->cycles[0].totalCost += (ins_edges_c0 - del_edges_c0);
+    this->cycles[1].totalCost += (ins_edges_c1 - del_edges_c1);
 }
 
 void Solution2Cycles::makeMove(const int type, const int a, const int b, Cycle * c){
