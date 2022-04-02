@@ -11,7 +11,8 @@ using namespace nlohmann;
 
 typedef std::vector<int> NEIGHBOURHOOD;
 
-const int NUMBER_OF_ITERATIONS = 2;
+//to jest zmienna, która oznacza ile iteracji będziemy wykonywać, u nas jest to 100 razy
+const int NUMBER_OF_ITERATIONS = 100;
 
 int main(){
 
@@ -31,6 +32,7 @@ int main(){
     algs_start.push_back(new AlgorithmCycleExpansion());
     algs_start.push_back(new Algorithm2Regret());
     algs_start.push_back(new AlgorithmRandom());
+    algs_start.push_back(new AlgorithmSeparateCycles());
 
     algs_meta.push_back(new AlgorithmLocalSteepest(nullptr));
     algs_meta.push_back(new AlgorithmLocalGreedy(nullptr));

@@ -8,5 +8,6 @@
 #include "algorithms/algorithmLocalGreedy.hpp"
 #include "algorithms/algorithmLocalSteepest.hpp"
 #include "algorithms/algorithmRandom.hpp"
+#include "algorithms/algorithmSeparateCycles.hpp"
 
 #endif
