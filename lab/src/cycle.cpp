@@ -1,6 +1,6 @@
 #include "cycle.hpp"
 
-const int Cycle::getTotalCost(const InstanceTSP & instance){
+const int Cycle::getTotalCost(){
 
     return this->totalCost;
 }
@@ -106,14 +106,14 @@ void Cycle::swap2Edges(const int a, const int b){
 
     int ins_egdes, del_edges;
 
-    ins_egdes = instance->matrix[succ_e1][prev_e2] + instance->matrix[succ_e2][prev_e1];
-    del_edges = instance->matrix[prev_e1][succ_e2] + instance->matrix[prev_e2][succ_e2];
+    ins_egdes = instance->matrix[prev_e1][prev_e2] + instance->matrix[succ_e2][succ_e1];
+    del_edges = instance->matrix[prev_e1][succ_e1] + instance->matrix[prev_e2][succ_e2];
 
     this->totalCost += (ins_egdes - del_edges);
 
     for(int i = 0; i < n_of_swaps; i++){
 
-        int am = (a + i) % s;
+        int am = (a + i + 1) % s;
         int bm = (s + b - i) % s;
         std::swap(this->vertices[am], this->vertices[bm]);
     }
@@ -127,21 +127,41 @@ void Cycle::swap2Vertices(const int a, const int b){
     int succ_a = vertices[(vs + a + 1) % vs];
     int prev_b = vertices[(vs + b - 1) % vs];
     int succ_b = vertices[(vs + b + 1) % vs];
+    int _a = vertices[a];
+    int _b = vertices[b];
 
-    int del_edges = instance->matrix[prev_a][a] + instance->matrix[a][succ_a] +
-                    instance->matrix[prev_b][b] + instance->matrix[b][succ_b];
-    int ins_edges = instance->matrix[prev_a][b] + instance->matrix[a][succ_b];
+    int del_edges = instance->matrix[prev_a][_a] + instance->matrix[_a][succ_a] +
+                    instance->matrix[prev_b][_b] + instance->matrix[_b][succ_b];
+    int ins_edges = instance->matrix[prev_a][_b] + instance->matrix[_a][succ_b];
 
-    if(a - b == 1){
+    if(b - a == 1){
 
-        del_edges += 2 * instance->matrix[a][b];
+        ins_edges = instance->matrix[prev_a][_b] + instance->matrix[_a][succ_b] + 
+                    instance->matrix[_a][_b] * 2;
+    }
+    else if(a == 0 && b == vs - 1){
+
+        ins_edges = instance->matrix[prev_b][_a] + instance->matrix[_b][succ_a] +
+                    instance->matrix[_a][_b] * 2;
     }
     else {
 
-        del_edges += (instance->matrix[b][succ_a] + instance->matrix[prev_b][a]);
+        ins_edges += (instance->matrix[_b][succ_a] + instance->matrix[prev_b][_a]);
     }
 
     totalCost += (ins_edges - del_edges);
 
     std::swap(this->vertices[a], this->vertices[b]);
+}
+
+int Cycle::calculateCostFromZero(){
+
+    int sum = 0;
+
+    for(int i = 0; i < vertices.size(); i++){
+
+        sum += instance->matrix[vertices[i]][vertices[(i + 1) % vertices.size()]];
+    }
+
+    return sum;
 }

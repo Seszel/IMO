@@ -39,7 +39,7 @@ int main(){
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},
         {"vertices", {Solution2Cycles::SWAP_BETWEEN_CYCLES, Solution2Cycles::SWAP_2_VERTICES}},
-        {"all", {Solution2Cycles::SWAP_BETWEEN_CYCLES, Solution2Cycles::SWAP_2_VERTICES, Solution2Cycles::SWAP_2_EDGES}}
+        {"all", {Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES, Solution2Cycles::SWAP_2_VERTICES}}
     };
 
     //load instances
@@ -59,7 +59,7 @@ int main(){
 
     Solution2Cycles best;
 
-    std::vector<int> costs;
+    std::vector<int> costs, costs_start;
     //generate results for greedy
     for(auto algorithm : algs_start){
 
@@ -74,13 +74,17 @@ int main(){
                 for(auto & instance : instances){
 
                     int min = 1e9;
-                    costs.clear();
+
+                    costs.clear();costs_start.clear();
                     
                     for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
 
                         Solution2Cycles s = algorithm->run(instance);
 
+                        costs_start.push_back(s.getTotalCost());
+
                         algorithm_meta->setStartingSolution(&s);
+                        algorithm_meta->setAvailableMoveTypes(nghbrhd.second);
 
                         Solution2Cycles finals = algorithm_meta->run(instance); 
 
@@ -96,6 +100,7 @@ int main(){
                     auto best_json = json::parse(best.saveAsJson());
 
                     best_json["instance"]["f"] = costs;
+                    best_json["instance"]["f_start"] = costs_start;
                     tmp.push_back(best_json["instance"]);
                 }
                 json h;

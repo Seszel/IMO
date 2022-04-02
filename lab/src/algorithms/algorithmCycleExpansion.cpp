@@ -10,6 +10,8 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
 
     int cycleLength = 50;
 
+    finalSolution.setInstance(instance);
+
     while(!allVisited(visited)){
 
         //choose random starting vertex
@@ -62,8 +64,6 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
 
     finalSolution.setAlgorithmType("cycle_expansion");
     finalSolution.setInstanceName(instance.getName());
-
-    finalSolution.setInstance(instance);
 
     return finalSolution;
 }

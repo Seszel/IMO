@@ -7,9 +7,9 @@ const Solution2Cycles AlgorithmBlindRunner::run(const InstanceTSP & instance){
 
     for(int i = 0; i < this->MAX_ITERATIONS; i++){
 
-        int op = rand()% 3;
+        int op = rand()% availableMoveTypes.size();
 
-        if(op == Solution2Cycles::SWAP_BETWEEN_CYCLES){
+        if(availableMoveTypes[op] == Solution2Cycles::SWAP_BETWEEN_CYCLES){
 
             const int a = rand() % currentSolution[0].getLength();
             const int b = rand() % currentSolution[1].getLength();
@@ -18,18 +18,22 @@ const Solution2Cycles AlgorithmBlindRunner::run(const InstanceTSP & instance){
         }
         else {
             const int cyc = rand() % 2;
-            const int a = rand() % currentSolution[cyc].getLength();
+            int a = rand() % currentSolution[cyc].getLength();
             int b = a;
 
             while(a == b){
                 b = rand() % currentSolution[cyc].getLength();
             }
 
-            if(op == Solution2Cycles::SWAP_2_EDGES){
+            if(a > b){
+                std::swap(a, b);
+            }
+
+            if(availableMoveTypes[op] == Solution2Cycles::SWAP_2_EDGES){
 
                 currentSolution.swap2Edges(a, b, &currentSolution[cyc]);
             }
-            else if( op == Solution2Cycles::SWAP_2_VERTICES){
+            else if(availableMoveTypes[op] == Solution2Cycles::SWAP_2_VERTICES){
 
                 currentSolution.swap2VerticesInCycle(a, b, &currentSolution[cyc]);
             }

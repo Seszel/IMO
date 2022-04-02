@@ -22,6 +22,8 @@ const Solution2Cycles AlgorithmGreedyNN::run(const InstanceTSP & instance){
         int prevAddedVertex = randomStart;
         int nextVertex;
 
+        finalSolution.setInstance(instance);
+
         Cycle * currentCycle = finalSolution.addCycle();
 
         currentCycle->pushBackVertex(randomStart);
@@ -45,9 +47,6 @@ const Solution2Cycles AlgorithmGreedyNN::run(const InstanceTSP & instance){
 
     finalSolution.setAlgorithmType("greedy_nearest_neighbour");
     finalSolution.setInstanceName(instance.getName());
-
-    finalSolution.setInstance(instance);
-
 
     return finalSolution;
 }

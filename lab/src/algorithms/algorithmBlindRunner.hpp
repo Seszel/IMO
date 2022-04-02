@@ -5,6 +5,10 @@
 #include "../allsolutions.hpp"
 #include "../allinstances.hpp"
 
+#include <algorithm>
+#include <cstdlib>
+#include <vector>
+
 class AlgorithmBlindRunner : public Algorithm2cyclesMeta {
 
 private:

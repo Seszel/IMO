@@ -18,6 +18,8 @@ const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
 
     int cycleLength = 50;
 
+    finalSolution.setInstance(instance);
+
     while(std::find(visited.begin(), visited.end(), false)!= visited.end()){
 
         //choose random startin vertex
@@ -90,8 +92,6 @@ const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
 
     finalSolution.setAlgorithmType("2-regret");
     finalSolution.setInstanceName(instance.getName());
-
-    finalSolution.setInstance(instance);
 
     return finalSolution;
 }

@@ -20,7 +20,7 @@ public:
         this->instance = &i;
     }
 
-    const int getTotalCost(const InstanceTSP &);
+    const int getTotalCost();
     int & operator[](int);
     void removeVertex(std::size_t);
     void addVertex(std::size_t, const int);
@@ -32,6 +32,8 @@ public:
 
     void swap2Edges(const int, const int);
     void swap2Vertices(const int, const int);
+
+    int calculateCostFromZero();
 
     friend class Solution2Cycles;
 };

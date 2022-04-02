@@ -51,6 +51,8 @@ public:
     void swap2VerticesInCycle(const int, const int, Cycle *);
     void makeMove(const int, const int, const int, Cycle *);
 
+    int calculateFromZero();
+
     const std::string saveAsJson();
 };
 

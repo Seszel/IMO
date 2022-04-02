@@ -3,10 +3,12 @@
 const Solution2Cycles AlgorithmRandom::run(const InstanceTSP & instance){
     
     Solution2Cycles solution;
-
+    solution.setInstance(instance);
     auto currentCycle = solution.addCycle();
 
     std::vector<int> v;v.resize(instance.dimension);
+
+
 
     for(int i = 0; i < v.size(); i ++)
         v[i] = i;
@@ -33,8 +35,6 @@ const Solution2Cycles AlgorithmRandom::run(const InstanceTSP & instance){
 
     solution.setAlgorithmType("random");
     solution.setInstanceName(instance.getName());
-
-    solution.setInstance(instance);
 
     return solution;
 }
