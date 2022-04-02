@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <vector>
+#include <chrono>
 
 class AlgorithmBlindRunner : public Algorithm2cyclesMeta {
 

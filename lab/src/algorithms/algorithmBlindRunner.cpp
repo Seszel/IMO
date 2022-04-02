@@ -4,8 +4,11 @@ const Solution2Cycles AlgorithmBlindRunner::run(const InstanceTSP & instance){
 
     Solution2Cycles bestSolution = Solution2Cycles(*this->startSolution), currentSolution = Solution2Cycles(*this->startSolution);
 
+    int duration = 0;
 
-    for(int i = 0; i < this->MAX_ITERATIONS; i++){
+    auto start = std::chrono::steady_clock::now();
+
+    while(duration < 500){
 
         int op = rand()% availableMoveTypes.size();
 
@@ -44,6 +47,10 @@ const Solution2Cycles AlgorithmBlindRunner::run(const InstanceTSP & instance){
 
             bestSolution = currentSolution;
         }
+
+        auto end = std::chrono::steady_clock::now();
+
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }
 
     this->bestFoundSolution = new Solution2Cycles(bestSolution);

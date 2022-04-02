@@ -4,6 +4,9 @@
 #include "lib/json/single_include/nlohmann/json.hpp"
 #include "src/util_functions.hpp"
 
+#include <chrono>
+#include <unistd.h>
+
 #include <iostream>
 #include <fstream>
 
@@ -28,10 +31,10 @@ int main(){
 
     std::vector<Algorithm2cycles *> algs_start;
     std::vector<Algorithm2cyclesMeta *> algs_meta;
-    algs_start.push_back(new AlgorithmGreedyNN());
-    algs_start.push_back(new AlgorithmCycleExpansion());
-    algs_start.push_back(new Algorithm2Regret());
-    algs_start.push_back(new AlgorithmRandom());
+    // algs_start.push_back(new AlgorithmGreedyNN());
+    // algs_start.push_back(new AlgorithmCycleExpansion());
+    // algs_start.push_back(new Algorithm2Regret());
+    // algs_start.push_back(new AlgorithmRandom());
     algs_start.push_back(new AlgorithmSeparateCycles());
 
     algs_meta.push_back(new AlgorithmLocalSteepest(nullptr));
@@ -62,6 +65,7 @@ int main(){
     Solution2Cycles best;
 
     std::vector<int> costs, costs_start;
+    std::vector<float> t_start, t_meta;
     //generate results for greedy
     for(auto algorithm : algs_start){
 
@@ -78,17 +82,26 @@ int main(){
                     int min = 1e9;
 
                     costs.clear();costs_start.clear();
+                    t_meta.clear();t_start.clear();
                     
                     for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
 
+                        auto start = std::chrono::steady_clock::now();
                         Solution2Cycles s = algorithm->run(instance);
+                        auto end = std::chrono::steady_clock::now();
+
+                        t_start.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 
                         costs_start.push_back(s.getTotalCost());
 
                         algorithm_meta->setStartingSolution(&s);
                         algorithm_meta->setAvailableMoveTypes(nghbrhd.second);
 
+                        start = std::chrono::steady_clock::now();
                         Solution2Cycles finals = algorithm_meta->run(instance); 
+                        end = std::chrono::steady_clock::now();
+
+                        t_meta.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 
                         auto cost = finals.getTotalCost();
 
@@ -103,6 +116,8 @@ int main(){
 
                     best_json["instance"]["f"] = costs;
                     best_json["instance"]["f_start"] = costs_start;
+                    best_json["instance"]["t_start"] = t_start;
+                    best_json["instance"]["t_meta"] = t_meta;
                     tmp.push_back(best_json["instance"]);
                 }
                 json h;
