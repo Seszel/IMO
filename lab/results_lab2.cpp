@@ -31,10 +31,10 @@ int main(){
 
     std::vector<Algorithm2cycles *> algs_start;
     std::vector<Algorithm2cyclesMeta *> algs_meta;
-    // algs_start.push_back(new AlgorithmGreedyNN());
-    // algs_start.push_back(new AlgorithmCycleExpansion());
-    // algs_start.push_back(new Algorithm2Regret());
-    // algs_start.push_back(new AlgorithmRandom());
+    algs_start.push_back(new AlgorithmGreedyNN());
+    algs_start.push_back(new AlgorithmCycleExpansion());
+    algs_start.push_back(new Algorithm2Regret());
+    algs_start.push_back(new AlgorithmRandom());
     algs_start.push_back(new AlgorithmSeparateCycles());
 
     algs_meta.push_back(new AlgorithmLocalSteepest(nullptr));
@@ -71,7 +71,7 @@ int main(){
 
         for(auto algorithm_meta : algs_meta){
 
-            std::cout << algorithm_meta->getName() << std::endl;
+            std::cerr << algorithm_meta->getName() << std::endl;
 
             for(const auto & nghbrhd : neighbourhoods){
 
@@ -85,6 +85,8 @@ int main(){
                     t_meta.clear();t_start.clear();
                     
                     for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+
+                        std::cerr << i << " ";
 
                         auto start = std::chrono::steady_clock::now();
                         Solution2Cycles s = algorithm->run(instance);
@@ -112,6 +114,8 @@ int main(){
                             best = finals;
                         }
                     }
+
+                    std::cerr << std::endl;
                     auto best_json = json::parse(best.saveAsJson());
 
                     best_json["instance"]["f"] = costs;

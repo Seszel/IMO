@@ -100,17 +100,17 @@ void Solution2Cycles::swap2Edges(const int a, const int b, Cycle * cycle){
 
     cycle->swap2Edges(a, b);
 
-    if(cycle->getTotalCost() != cycle->calculateCostFromZero()){
-        std::cerr << "o";
-    }
+    // if(cycle->getTotalCost() != cycle->calculateCostFromZero()){
+    //     std::cerr << "o";
+    // }
 }
 
 void Solution2Cycles::swap2VerticesInCycle(const int a, const int b, Cycle * cycle){
 
     cycle->swap2Vertices(a, b);
-    if(cycle->getTotalCost() != cycle->calculateCostFromZero()){
-        std::cerr << "o";
-    }
+    // if(cycle->getTotalCost() != cycle->calculateCostFromZero()){
+    //     std::cerr << "o";
+    // }
 }
 
 void  Solution2Cycles::swapVerticesBetweenCycles(const int a, const int b){
@@ -140,9 +140,9 @@ void  Solution2Cycles::swapVerticesBetweenCycles(const int a, const int b){
     this->cycles[0].totalCost += (ins_edges_c0 - del_edges_c0);
     this->cycles[1].totalCost += (ins_edges_c1 - del_edges_c1);
 
-    if(cycles[0].getTotalCost() != cycles[0].calculateCostFromZero() || cycles[1].getTotalCost() != cycles[1].calculateCostFromZero()){
-        std::cerr << "o";
-    }
+    // if(cycles[0].getTotalCost() != cycles[0].calculateCostFromZero() || cycles[1].getTotalCost() != cycles[1].calculateCostFromZero()){
+    //     std::cerr << "o";
+    // }
 }
 
 void Solution2Cycles::makeMove(const int type, const int a, const int b, Cycle * c){
