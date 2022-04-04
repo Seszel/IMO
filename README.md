@@ -4,4 +4,4 @@ Repozytorium tworzone w ramach przedmiotu Inteligentne Metody Optymalizacji (Inf
 
 ## Zawartość repezytorium
 
-**lab1** - Kod programu dla projektu "Zastosowanie konstrukcyjnych heurystyk w optymalizacji zmodyfikowanego problemu TSP"
+**lab** - Kod programu dla projektu "Zastosowanie konstrukcyjnych heurystyk w optymalizacji zmodyfikowanego problemu TSP" oraz projektu "Zastosowanie lokalnego przeszukiwania w optymalizacji zmodyfikowanego problemu TSP"
