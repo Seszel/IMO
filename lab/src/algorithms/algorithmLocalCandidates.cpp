@@ -46,16 +46,40 @@ const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance
     auto closestVertices = findKClosestVertices(10, instance, cycles);
 
     for (int vertex=0 ; vertex<closestVertices.size(); vertex++){
+        std::vector<Move > moves;
         for (int pair=0; pair<closestVertices.size(); pair++) {
             if (closestVertices.at(vertex).first == closestVertices.at(vertex).second[pair].first) {
                 Cycle cycle = cycles[closestVertices.at(vertex).first];
+                moves.push_back({
+                    vertex, closestVertices.at(vertex).second[pair].second,
+                    closestVertices.at(vertex).first, Solution2Cycles::SWAP_2_EDGES
+                });
             }
         }
-        
-        std::cout << closestVertices.at(vertex).first << std::endl;
+
+        Move best_move;
+        int min_f_value = std::numeric_limits<int>::max();
+
+        for(auto & move : moves){
+
+            auto move_value = this->calculateCostAfterMove(currentSolution, move);
+
+            if(move_value < min_f_value){
+                min_f_value = move_value;
+                best_move = move;
+            }
+        }
+
+        if(min_f_value < currentSolution.getTotalCost()){
+
+            currentSolution.makeMove(
+                best_move.type,
+                best_move.a,
+                best_move.b,
+                &currentSolution[best_move.cyc_num]
+            );
+        }
     }
-
-
 
     return currentSolution;
 

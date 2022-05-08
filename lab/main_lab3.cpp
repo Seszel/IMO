@@ -14,7 +14,7 @@ int main(int argc, char ** argv){
     InstanceTSP instance;
 
     auto path = getPathToWorkspaceFolder();
-    path += "data/kroa200.tsp";
+    path += "data/kroa100.tsp";
     instance.readFromFile(path);
     std::cout << "Data loaded" << std::endl;
 
