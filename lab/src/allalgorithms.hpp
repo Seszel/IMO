@@ -9,5 +9,6 @@
 #include "algorithms/algorithmLocalSteepest.hpp"
 #include "algorithms/algorithmRandom.hpp"
 #include "algorithms/algorithmSeparateCycles.hpp"
+#include "algorithms/algorithmLocalCandidates.hpp"
 
 #endif

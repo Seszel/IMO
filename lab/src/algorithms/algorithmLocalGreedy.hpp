@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <string>
 
 class AlgorithmLocalGreedy : public Algorithm2cyclesMeta{
 
