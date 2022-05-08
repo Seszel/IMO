@@ -5,7 +5,7 @@
 
 int main(int argc, char ** argv){
     InstanceTSP instance;
-    instance.readFromFile("/home/piotr/Dokumenty/SI/imo/IMO/lab1/data/kroa100.tsp");
+    instance.readFromFile("data/kroa100.tsp");
 
     std::cout << "Data loaded" << std::endl;
 
