@@ -16,7 +16,7 @@ const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
 
     visited.resize(instance.dimension, false);
 
-    int cycleLength = 50;
+    int cycleLength = instance.dimension/2;
 
     finalSolution.setInstance(instance);
 

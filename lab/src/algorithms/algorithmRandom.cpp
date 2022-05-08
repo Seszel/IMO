@@ -13,7 +13,7 @@ const Solution2Cycles AlgorithmRandom::run(const InstanceTSP & instance){
     for(int i = 0; i < v.size(); i ++)
         v[i] = i;
 
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < instance.dimension/2; i++){
 
         int r = rand()%v.size();
 
@@ -24,7 +24,7 @@ const Solution2Cycles AlgorithmRandom::run(const InstanceTSP & instance){
 
     currentCycle = solution.addCycle();
 
-    for(int i = 0; i < 50; i++){
+    for(int i = 0; i < instance.dimension/2; i++){
 
         int r = rand() % v.size();
 

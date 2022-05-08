@@ -8,7 +8,7 @@ const Solution2Cycles AlgorithmGreedyNN::run(const InstanceTSP & instance){
 
     visited.resize(instance.dimension, false);
 
-    int cycleLength = 50;
+    int cycleLength = instance.dimension/2;
     
 
     while(!allVisited(visited)){  
