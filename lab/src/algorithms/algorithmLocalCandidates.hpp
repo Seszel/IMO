@@ -39,7 +39,7 @@ public:
     const std::string getName() override { return "local_candidates";}
     void setAvailableMoveTypes(std::vector<int>);
     void setStartingSolution(const Solution2Cycles * s){ this->startSolution = s; }
-    std::vector<int > findNClosestVertices(int, int, const InstanceTSP &);
+    std::vector<std::vector<int > > findKClosestVertices(int, const InstanceTSP &);
 };
 
 #endif
