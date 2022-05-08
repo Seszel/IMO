@@ -21,7 +21,7 @@ private:
     };
 
 public:
-    
+
 
     AlgorithmLocalCandidates(const Solution2Cycles * startSolution){
 
@@ -39,7 +39,9 @@ public:
     const std::string getName() override { return "local_candidates";}
     void setAvailableMoveTypes(std::vector<int>);
     void setStartingSolution(const Solution2Cycles * s){ this->startSolution = s; }
-    std::vector<std::vector<int > > findKClosestVertices(int, const InstanceTSP &);
+    std::vector<std::pair<int, std::vector<std::pair<int, int> > > > findKClosestVertices(int, const InstanceTSP &, std::vector<Cycle > &);
+    // vector of pairs closest vertices to all vertices
+    // vector<pair(vertex cycle, vector<pair(vertex cycle, vertex)>)>
 };
 
 #endif

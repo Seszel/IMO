@@ -35,6 +35,8 @@ public:
 
     int calculateCostFromZero();
 
+    const std::vector<int > getCycleVertices();
+
     friend class Solution2Cycles;
 };
 

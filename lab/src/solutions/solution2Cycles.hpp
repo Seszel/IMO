@@ -54,6 +54,8 @@ public:
     int calculateFromZero();
 
     const std::string saveAsJson();
+
+    const std::vector<Cycle > getCycles();
 };
 
 #endif

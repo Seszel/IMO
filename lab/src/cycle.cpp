@@ -165,3 +165,8 @@ int Cycle::calculateCostFromZero(){
 
     return sum;
 }
+
+const std::vector<int > Cycle::getCycleVertices(){
+
+    return this->vertices;
+}

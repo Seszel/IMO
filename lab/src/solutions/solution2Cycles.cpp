@@ -172,3 +172,14 @@ int Solution2Cycles::calculateFromZero(){
 
     return sum;
 }
+
+const std::vector<Cycle > Solution2Cycles::getCycles(){
+
+    std::vector<Cycle > cycles;
+
+    for (int i=0; i < this->cycles.size(); i++){
+        cycles.push_back(this->cycles[i]);
+    }
+
+    return cycles;
+}
