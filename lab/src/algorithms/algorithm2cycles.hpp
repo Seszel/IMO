@@ -8,10 +8,14 @@
 #include <vector>
 
 struct Move {
-    int a;
-    int b;
+    int a; // index of vertice in cycle
+    int b; // index of vertice in cycle
     int cyc_num;
     int type;
+    int a_v; // vertice number, corresponds to index 'a'
+    int b_v; // vertice number, corresponds to index 'b'
+    int as_v; // used only when swapping edges
+    int bs_v; // used only when swapping edges
 };
 
 class Algorithm2cycles : public Algorithm {

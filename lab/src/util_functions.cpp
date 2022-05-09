@@ -19,3 +19,13 @@ const std::string getPathToWorkspaceFolder(){
     return directory;
 
 }
+
+const std::size_t getHashOfMove(Move move){
+
+    return std::hash<std::string>{}(std::to_string(move.a_v) + "_" + std::to_string(move.b_v));
+}
+
+const int isApplicable(Solution2Cycles & solution, Move move){
+
+    
+}

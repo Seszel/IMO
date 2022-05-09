@@ -29,7 +29,7 @@ std::vector<Move> Algorithm2cycles::getMoves(Solution2Cycles & currentSolution, 
                 for(int a = 0; a < currentSolution[cn].getLength() - 1; a++){
                     for(int b = a + 1; b < currentSolution[cn].getLength(); b++){
                         moves.push_back({
-                            a,b,cn,type
+                            a,b,cn,type, currentSolution[cn][a], currentSolution[cn][b]
                         });
                     }
                 }
@@ -40,7 +40,7 @@ std::vector<Move> Algorithm2cycles::getMoves(Solution2Cycles & currentSolution, 
             for(int a = 0; a < currentSolution[0].getLength(); a++){
                 for(int b = 0; b < currentSolution[1].getLength(); b++){
                     moves.push_back({
-                        a,b,0,type
+                        a,b,0,type, currentSolution[0][a], currentSolution[1][b]
                     });                    
                 }
             }
@@ -50,8 +50,12 @@ std::vector<Move> Algorithm2cycles::getMoves(Solution2Cycles & currentSolution, 
             for(int cn = 0; cn < 2; cn++){
                 for(int a = 0; a < currentSolution[cn].getLength() - 2; a++){
                     for(int b = a + 2; b < currentSolution[cn].getLength(); b++){
+                        int as_v, bs_v;
+                        as_v = currentSolution[cn][(a + 1) % currentSolution[cn].getLength()];
+                        bs_v = currentSolution[cn][(b + 1) % currentSolution[cn].getLength()];
                         moves.push_back({
-                            a,b,cn,type
+                            a,b,cn,type, currentSolution[cn][a], currentSolution[cn][b],
+                            as_v, bs_v
                         });
                     }
                 }
