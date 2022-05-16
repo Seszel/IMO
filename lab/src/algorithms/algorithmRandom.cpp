@@ -8,8 +8,6 @@ const Solution2Cycles AlgorithmRandom::run(const InstanceTSP & instance){
 
     std::vector<int> v;v.resize(instance.dimension);
 
-
-
     for(int i = 0; i < v.size(); i ++)
         v[i] = i;
 

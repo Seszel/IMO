@@ -1,41 +1,40 @@
-#ifndef ALGORITHM_LM_SEARCH_HPP
-#define ALGORITHM_LM_SEARCH_HPP
+#ifndef ALGORITHM_MULTIPLE_START_LOCAL_SEARCH_HPP
+#define ALGORITHM_MULTIPLE_START_LOCAL_SEARCH_HPP
 
 #include "algorithm2cyclesMeta.hpp"
+#include "algorithmLocalSteepest.hpp"
+#include "algorithmRandom.hpp"
 #include "../allsolutions.hpp"
 #include "../allinstances.hpp"
-#include "util_functions.hpp"
 
 #include <algorithm>
 #include <cstdlib>
 #include <vector>
 #include <chrono>
-#include <unordered_map>
 
-class AlgorithmLMSearch : public Algorithm2cyclesMeta {
+class AlgorithmMultipleStartLocalSearch : public Algorithm2cyclesMeta {
 
 private:
 
     const Solution2Cycles * startSolution = nullptr;
+    int ITERATIONS = 10;
     Solution2Cycles * bestFoundSolution = nullptr;
     std::vector<int> availableMoveTypes;
 
-    void updateLM(std::unordered_map<size_t, std::pair<Move, int> >&, Move, Solution2Cycles &);
-
 public:
 
-    AlgorithmLMSearch(Solution2Cycles * startSolution){
+    AlgorithmMultipleStartLocalSearch(Solution2Cycles * startSolution){
         this->startSolution = startSolution;
     }
 
-    virtual ~AlgorithmLMSearch(){
+    virtual ~AlgorithmMultipleStartLocalSearch(){
         if(this->bestFoundSolution != nullptr){
             delete this->bestFoundSolution;
         }
     }
 
     const Solution2Cycles run(const InstanceTSP &) override;
-    const std::string getName() override { return "lm_search";}
+    const std::string getName() override { return "msls";}
     void setAvailableMoveTypes(std::vector<int>) override;
     void setStartingSolution(const Solution2Cycles *) override;
 };

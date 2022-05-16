@@ -120,3 +120,45 @@ const int Algorithm2cycles::calculateCostAfterMove(Solution2Cycles & currentSolu
 
     return value;
 }
+
+const std::vector<std::pair<int, int> > Algorithm2cycles::findVertices(std::vector<int> & vertices, Solution2Cycles & sol){
+
+    std::vector<std::pair<int, int> > tuples;//first cycle, second index
+    for(auto & v : vertices){
+        for(int j = 0; j < sol.getCycles().size(); j++){
+            for(int i = 0; i < sol[j].getLength(); i ++){
+                if(v == sol[j][i]){
+                    tuples.push_back({j, i});
+                }
+            }
+        }
+    }
+
+    if(tuples.size() != vertices.size()){
+        std::cerr << "źle";
+    }
+
+    return tuples;
+}
+const std::vector<int> Algorithm2cycles::findKClosestVertices(const int v, const int k, const InstanceTSP & instance){
+
+    std::vector<const int *> ptrs(instance.dimension);
+
+    for(int i = 0; i < instance.dimension; i ++){
+        ptrs[i] = &instance.matrix[v][i];
+    }  
+
+    std::sort(ptrs.begin(), ptrs.end(), [](const int * a, const int * b){
+        return *a < *b;
+    });
+
+    int K = std::min(k, instance.dimension - 1);
+
+    std::vector<int> out(K);
+    for(int i = 0; i < K; i++){
+        std::ptrdiff_t d = ptrs[i] - &instance.matrix[v][0];
+        out[i] = d;
+    }
+
+    return out;
+}

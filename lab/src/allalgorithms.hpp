@@ -10,5 +10,9 @@
 #include "algorithms/algorithmRandom.hpp"
 #include "algorithms/algorithmSeparateCycles.hpp"
 #include "algorithms/algorithmLocalCandidates.hpp"
+#include "algorithms/algorithmLMSearch.hpp"
+#include "algorithms/algorithmMultipleStartLocalSearch.hpp"
+#include "algorithms/algorithmLargeScaleNeighborhood.hpp"
+#include "algorithms/algorithmSmallPerturbation.hpp"
 
 #endif

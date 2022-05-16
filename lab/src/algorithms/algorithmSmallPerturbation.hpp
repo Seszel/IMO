@@ -1,7 +1,8 @@
-#ifndef ALGORITHM_LM_SEARCH_HPP
-#define ALGORITHM_LM_SEARCH_HPP
+#ifndef ALGORITHM_SMALL_PERTURBATION_HPP
+#define ALGORITHM_SMALL_PERTURBATION_HPP
 
 #include "algorithm2cyclesMeta.hpp"
+#include "algorithmLocalSteepest.hpp"
 #include "../allsolutions.hpp"
 #include "../allinstances.hpp"
 #include "util_functions.hpp"
@@ -12,7 +13,7 @@
 #include <chrono>
 #include <unordered_map>
 
-class AlgorithmLMSearch : public Algorithm2cyclesMeta {
+class AlgorithmSmallPerturbation : public Algorithm2cyclesMeta {
 
 private:
 
@@ -20,22 +21,22 @@ private:
     Solution2Cycles * bestFoundSolution = nullptr;
     std::vector<int> availableMoveTypes;
 
-    void updateLM(std::unordered_map<size_t, std::pair<Move, int> >&, Move, Solution2Cycles &);
+    void perturbate(Solution2Cycles &, int, const InstanceTSP &);
 
 public:
 
-    AlgorithmLMSearch(Solution2Cycles * startSolution){
+    AlgorithmSmallPerturbation(Solution2Cycles * startSolution){
         this->startSolution = startSolution;
     }
 
-    virtual ~AlgorithmLMSearch(){
+    virtual ~AlgorithmSmallPerturbation(){
         if(this->bestFoundSolution != nullptr){
             delete this->bestFoundSolution;
         }
     }
 
     const Solution2Cycles run(const InstanceTSP &) override;
-    const std::string getName() override { return "lm_search";}
+    const std::string getName() override { return "small_perturbation";}
     void setAvailableMoveTypes(std::vector<int>) override;
     void setStartingSolution(const Solution2Cycles *) override;
 };

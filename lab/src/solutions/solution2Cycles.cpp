@@ -169,6 +169,7 @@ int Solution2Cycles::calculateFromZero(){
 
         sum += cycles[i].calculateCostFromZero();
     }
+    this->totalCost = sum;
 
     return sum;
 }

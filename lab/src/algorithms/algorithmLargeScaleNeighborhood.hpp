@@ -1,7 +1,8 @@
-#ifndef ALGORITHM_LM_SEARCH_HPP
-#define ALGORITHM_LM_SEARCH_HPP
+#ifndef ALGORITHM_LARGE_SCALE_NEIGHBORHOOD_HPP
+#define ALGORITHM_LARGE_SCALE_NEIGHBORHOOD_HPP
 
 #include "algorithm2cyclesMeta.hpp"
+#include "algorithmLocalSteepest.hpp"
 #include "../allsolutions.hpp"
 #include "../allinstances.hpp"
 #include "util_functions.hpp"
@@ -12,7 +13,7 @@
 #include <chrono>
 #include <unordered_map>
 
-class AlgorithmLMSearch : public Algorithm2cyclesMeta {
+class AlgorithmLargeScaleNeighborhood : public Algorithm2cyclesMeta {
 
 private:
 
@@ -20,22 +21,23 @@ private:
     Solution2Cycles * bestFoundSolution = nullptr;
     std::vector<int> availableMoveTypes;
 
-    void updateLM(std::unordered_map<size_t, std::pair<Move, int> >&, Move, Solution2Cycles &);
+    std::vector<int> destroy(Solution2Cycles &, const InstanceTSP &, int);
+    void repair(Solution2Cycles &, const InstanceTSP &, std::vector<int>);
 
 public:
 
-    AlgorithmLMSearch(Solution2Cycles * startSolution){
+    AlgorithmLargeScaleNeighborhood(Solution2Cycles * startSolution){
         this->startSolution = startSolution;
     }
 
-    virtual ~AlgorithmLMSearch(){
+    virtual ~AlgorithmLargeScaleNeighborhood(){
         if(this->bestFoundSolution != nullptr){
             delete this->bestFoundSolution;
         }
     }
 
     const Solution2Cycles run(const InstanceTSP &) override;
-    const std::string getName() override { return "lm_search";}
+    const std::string getName() override { return "large_scale_neighborhood";}
     void setAvailableMoveTypes(std::vector<int>) override;
     void setStartingSolution(const Solution2Cycles *) override;
 };

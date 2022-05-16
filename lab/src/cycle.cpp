@@ -163,10 +163,28 @@ int Cycle::calculateCostFromZero(){
         sum += instance->matrix[vertices[i]][vertices[(i + 1) % vertices.size()]];
     }
 
+    this->totalCost = sum;
+
     return sum;
 }
 
 const std::vector<int > Cycle::getCycleVertices(){
 
     return this->vertices;
+}
+
+void Cycle::removeVertex(std::size_t pos){
+
+    int vertex = this->vertices[pos];
+    int vs = this->vertices.size();
+
+    int prev = vertices[(vs + pos - 1) % vs];
+    int succ = vertices[pos % vs];
+
+    int ins_edges = this->instance->matrix[prev][succ];
+    int del_edges = this->instance->matrix[prev][vertex] + this->instance->matrix[vertex][succ];
+
+    totalCost += (ins_edges - del_edges);
+
+    vertices.erase(vertices.begin() + pos);
 }

@@ -35,6 +35,8 @@ public:
     int findClosestVertex(int, const InstanceTSP &, std::vector<bool > &);
     std::vector<Move> getMoves(Solution2Cycles &, std::vector<int>);
     const int calculateCostAfterMove(Solution2Cycles &, const Move);
+    const std::vector<std::pair<int, int> > findVertices(std::vector<int> &, Solution2Cycles &);
+    const std::vector<int> findKClosestVertices(const int v, const int k, const InstanceTSP &);
 };
 
 #endif
