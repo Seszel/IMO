@@ -35,7 +35,7 @@ int main(){
     // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
     // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr));
 
-    algs_meta.push_back(new AlgorithmMultipleStartLocalSearch(nullptr));
+    // algs_meta.push_back(new AlgorithmMultipleStartLocalSearch(nullptr));
     algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr));
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {

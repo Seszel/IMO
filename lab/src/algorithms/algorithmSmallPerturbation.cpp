@@ -4,7 +4,7 @@ const Solution2Cycles AlgorithmSmallPerturbation::run(const InstanceTSP & instan
 
     Solution2Cycles bestSolution = Solution2Cycles(*this->startSolution), currentSolution = Solution2Cycles(*this->startSolution);
 
-    AlgorithmLocalSteepest algoritmSteepest(&currentSolution);
+    AlgorithmLocalSteepest algoritmSteepest(nullptr);
     int duration = 0;
     int K = 10;
 
@@ -13,15 +13,16 @@ const Solution2Cycles AlgorithmSmallPerturbation::run(const InstanceTSP & instan
     while(duration < 5000){
 
         this->perturbate(currentSolution, K, instance);
+        algoritmSteepest.setStartingSolution(&currentSolution);
         currentSolution = algoritmSteepest.run(instance);
 
         auto end = std::chrono::steady_clock::now();
 
         duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }
-    this->bestFoundSolution = new Solution2Cycles(bestSolution);
+    this->bestFoundSolution = new Solution2Cycles(currentSolution);
 
-    return bestSolution;
+    return currentSolution;
 }
 
 void AlgorithmSmallPerturbation::setAvailableMoveTypes(std::vector<int> types){
