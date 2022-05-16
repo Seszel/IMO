@@ -179,7 +179,7 @@ void Cycle::removeVertex(std::size_t pos){
     int vs = this->vertices.size();
 
     int prev = vertices[(vs + pos - 1) % vs];
-    int succ = vertices[pos % vs];
+    int succ = vertices[(pos + 1) % vs];
 
     int ins_edges = this->instance->matrix[prev][succ];
     int del_edges = this->instance->matrix[prev][vertex] + this->instance->matrix[vertex][succ];

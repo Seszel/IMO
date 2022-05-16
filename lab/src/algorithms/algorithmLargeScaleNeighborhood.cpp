@@ -4,7 +4,19 @@ const Solution2Cycles AlgorithmLargeScaleNeighborhood::run(const InstanceTSP & i
 
     Solution2Cycles bestSolution = Solution2Cycles(*this->startSolution), currentSolution = Solution2Cycles(*this->startSolution);
 
+    int duration;
+    auto start = std::chrono::steady_clock::now();
+    int K = 20;
 
+    while(duration < 5000){
+
+        auto missing = this->destroy(currentSolution, instance, K);
+        this->repair(currentSolution, instance, missing);
+
+        auto end = std::chrono::steady_clock::now();
+
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    }
 
     this->bestFoundSolution = new Solution2Cycles(bestSolution);
 
@@ -73,6 +85,8 @@ void AlgorithmLargeScaleNeighborhood::repair(Solution2Cycles & sol, const Instan
         for(auto & ins : insertions){
             if(sol[ins.cycle].getLength() < instance.dimension/2 && std::find(missing.begin(), missing.end(), ins.v) != missing.end()){
                 sol[ins.cycle].addVertex(ins.pos, ins.v);
+                auto it = std::find(missing.begin(), missing.end(), ins.v);
+                missing.erase(it);
             }
         }
     }

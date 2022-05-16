@@ -15,6 +15,9 @@ const Solution2Cycles AlgorithmSmallPerturbation::run(const InstanceTSP & instan
         this->perturbate(currentSolution, K, instance);
         algoritmSteepest.setStartingSolution(&currentSolution);
         currentSolution = algoritmSteepest.run(instance);
+        if(currentSolution.getTotalCost() < bestSolution.getTotalCost()){
+            bestSolution = currentSolution;
+        }
 
         auto end = std::chrono::steady_clock::now();
 

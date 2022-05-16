@@ -35,8 +35,10 @@ int main(){
     // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
     // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr));
 
+
     // algs_meta.push_back(new AlgorithmMultipleStartLocalSearch(nullptr));
-    algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr));
+    // algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr));
+    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr));
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},
