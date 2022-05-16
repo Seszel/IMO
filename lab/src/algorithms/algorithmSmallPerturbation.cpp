@@ -6,11 +6,11 @@ const Solution2Cycles AlgorithmSmallPerturbation::run(const InstanceTSP & instan
 
     AlgorithmLocalSteepest algoritmSteepest(nullptr);
     int duration = 0;
-    int K = 10;
+    int K = 8;
 
     auto start = std::chrono::steady_clock::now();
 
-    while(duration < 5000){
+    while(duration < 20000){
 
         this->perturbate(currentSolution, K, instance);
         algoritmSteepest.setStartingSolution(&currentSolution);
