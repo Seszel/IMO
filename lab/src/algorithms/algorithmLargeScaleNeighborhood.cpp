@@ -6,12 +6,16 @@ const Solution2Cycles AlgorithmLargeScaleNeighborhood::run(const InstanceTSP & i
 
     int duration;
     auto start = std::chrono::steady_clock::now();
-    int K = 20;
+    int K = 3;
 
-    while(duration < 5000){
+    while(duration < 20000){
 
         auto missing = this->destroy(currentSolution, instance, K);
         this->repair(currentSolution, instance, missing);
+
+        if(currentSolution.getTotalCost() < bestSolution.getTotalCost()){
+            bestSolution = currentSolution;
+        }
 
         auto end = std::chrono::steady_clock::now();
 
@@ -41,6 +45,10 @@ std::vector<int> AlgorithmLargeScaleNeighborhood::destroy(Solution2Cycles & sol,
 
     auto closest = this->findKClosestVertices(v, K, instance);
     auto clos_indx = this->findVertices(closest, sol);
+
+    std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
+        return a.second > b.second;
+    });
 
     for(auto & p : clos_indx){
         sol[p.first].removeVertex(p.second);
