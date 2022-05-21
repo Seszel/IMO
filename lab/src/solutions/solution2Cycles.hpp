@@ -31,6 +31,7 @@ public:
     static const int SWAP_2_EDGES = 0;
     static const int SWAP_2_VERTICES = 1;
     static const int SWAP_BETWEEN_CYCLES = 2;
+    static const int INSERT_EDGE = 3;
 
     Solution2Cycles(){}
     const int getTotalCost();
@@ -49,6 +50,8 @@ public:
     void swapVerticesBetweenCycles(const int, const int);
     void swap2Edges(const int, const int, Cycle *);
     void swap2VerticesInCycle(const int, const int, Cycle *);
+    void moveVertice(const int, const int, Cycle *);
+    void undoMoveVertice(const int, const int, Cycle *);
     void makeMove(const int, const int, const int, Cycle *);
 
     int calculateFromZero();

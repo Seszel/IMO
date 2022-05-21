@@ -31,6 +31,7 @@ int main(){
 
     std::vector<Algorithm2cycles *> algs_start;
     algs_start.push_back(new AlgorithmRandom());
+    algs_start.push_back(new AlgorithmSeparateCycles());
     std::vector<Algorithm2cyclesMeta *> algs_meta;
     // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
     algs_meta.push_back(new AlgorithmLocalCandidates(nullptr));

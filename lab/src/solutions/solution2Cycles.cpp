@@ -184,3 +184,13 @@ const std::vector<Cycle > Solution2Cycles::getCycles(){
 
     return cycles;
 }
+
+void Solution2Cycles::moveVertice(const int start, const int end, Cycle * cyc){
+
+    cyc->moveVertice(start, end);
+}
+
+void Solution2Cycles::undoMoveVertice(const int start, const int end, Cycle * cyc){
+
+    cyc->undoMoveVertice(start, end);
+}

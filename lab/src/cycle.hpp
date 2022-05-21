@@ -32,6 +32,9 @@ public:
 
     void swap2Edges(const int, const int);
     void swap2Vertices(const int, const int);
+    // void insertEdge(const int, const int);
+    void moveVertice(const int, const int);
+    void undoMoveVertice(const int, const int);
 
     int calculateCostFromZero();
 

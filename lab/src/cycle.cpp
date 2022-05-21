@@ -188,3 +188,37 @@ void Cycle::removeVertex(std::size_t pos){
 
     vertices.erase(vertices.begin() + pos);
 }
+
+void Cycle::moveVertice(const int start, const int end){
+
+    int w = vertices[start];
+
+    this->removeVertex(start);
+    if(start > end){
+        this->addVertex(end + 1, w);
+    }
+    else {
+        this->addVertex(end, w);
+    }
+
+    auto val = calculateCostFromZero();
+    if(val != this->getTotalCost()){
+        std::cerr << "r";
+    }
+}
+
+void Cycle::undoMoveVertice(const int start, const int end){
+    
+    int w;
+    if(start > end){
+        w = vertices[end + 1];
+        this->removeVertex(end + 1);
+        this->addVertex(start, w);
+    }
+    else {
+        w = vertices[end];
+        this->removeVertex(end);
+        this->addVertex(start, w);
+    }
+
+}

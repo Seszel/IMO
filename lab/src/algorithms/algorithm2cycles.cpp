@@ -117,9 +117,26 @@ const int Algorithm2cycles::calculateCostAfterMove(Solution2Cycles & currentSolu
             move.b
         );
     }
+    else if(move.type == Solution2Cycles::INSERT_EDGE){
+        
+        auto val_before = currentSolution.getTotalCost();
+
+        currentSolution.moveVertice(move.a, move.b, &currentSolution[move.cyc_num]);
+
+        value = currentSolution.getTotalCost();
+
+        currentSolution.undoMoveVertice(move.a, move.b, &currentSolution[move.cyc_num]);
+        
+        auto val_after = currentSolution.getTotalCost();
+
+        if(val_after != val_before){
+            std::cerr << "i";
+        } 
+    }
 
     return value;
 }
+
 
 const std::vector<std::pair<int, int> > Algorithm2cycles::findVertices(std::vector<int> & vertices, Solution2Cycles & sol){
 
