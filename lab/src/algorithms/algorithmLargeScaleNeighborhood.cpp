@@ -6,19 +6,23 @@ const Solution2Cycles AlgorithmLargeScaleNeighborhood::run(const InstanceTSP & i
 
     int duration;
     auto start = std::chrono::steady_clock::now();
-    int K = 20;
+    int K = 10;
 
-    while(duration < 5000){
+    while(duration < 20000){
 
-        auto missing = this->destroy(currentSolution, instance, K);
+        auto missing = this->destroy(currentSolution, instance, K, 1);
         this->repair(currentSolution, instance, missing);
+
+        if(bestSolution.getTotalCost() > currentSolution.getTotalCost()){
+            bestSolution = currentSolution;
+        }
 
         auto end = std::chrono::steady_clock::now();
 
         duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     }
 
-    this->bestFoundSolution = new Solution2Cycles(bestSolution);
+    this->bestFoundSolution = new Solution2Cycles(currentSolution);
 
     return bestSolution;
 }
@@ -33,20 +37,40 @@ void AlgorithmLargeScaleNeighborhood::setStartingSolution(const Solution2Cycles 
     this->startSolution = solution;
 }
 
-std::vector<int> AlgorithmLargeScaleNeighborhood::destroy(Solution2Cycles & sol, const InstanceTSP & instance, int K){
-
+std::vector<int> AlgorithmLargeScaleNeighborhood::destroy(Solution2Cycles & sol, const InstanceTSP & instance, int K, int type){
+        
     int start_vertex = std::rand() % sol[0].getLength();
     int cn = std::rand() % 2;
     int v = sol[cn][start_vertex];
+    std::vector<std::pair<int, int> > clos_indx;
+    std::vector<int> closest;
 
-    auto closest = this->findKClosestVertices(v, K, instance);
-    auto clos_indx = this->findVertices(closest, sol);
+    if(type == 0){
+
+        closest = this->findKClosestVertices(v, K, instance);
+        clos_indx = this->findVertices(closest, sol);
+        std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
+            return a.second > b.second;
+        });   
+    }
+    else {
+        for(int i = 0; i < K; i++){
+            
+            clos_indx.push_back({cn, (start_vertex + i) % sol[cn].getLength()});
+            closest.push_back(sol[cn][(start_vertex + i) % sol[cn].getLength()]);
+        }
+    }
+
+    std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
+        return a.second > b.second;
+    });
 
     for(auto & p : clos_indx){
         sol[p.first].removeVertex(p.second);
     }
 
-    return closest;
+    return closest;     
+
 }
 
 void AlgorithmLargeScaleNeighborhood::repair(Solution2Cycles & sol, const InstanceTSP & instance, std::vector<int> missing){
@@ -58,9 +82,12 @@ void AlgorithmLargeScaleNeighborhood::repair(Solution2Cycles & sol, const Instan
         int delta;
     };
 
+    
+
     std::vector<Tuple> insertions;
     for(auto v : missing){
 
+        insertions.clear();insertions.shrink_to_fit();
         // for each cycle
         for(int i = 0; i < sol.getCycles().size(); i++){
 
@@ -75,20 +102,29 @@ void AlgorithmLargeScaleNeighborhood::repair(Solution2Cycles & sol, const Instan
                 insertions.push_back({v, pos, i, diff});
             }
         }
-    }
+        std::sort(insertions.begin(), insertions.end(), [](const Tuple a, const Tuple b){
+            return a.delta < b.delta;
+        }); 
 
-    std::sort(insertions.begin(), insertions.end(), [](const Tuple a, const Tuple b){
-        return a.delta < b.delta;
-    });
-
-    while(missing.size() > 0){
         for(auto & ins : insertions){
-            if(sol[ins.cycle].getLength() < instance.dimension/2 && std::find(missing.begin(), missing.end(), ins.v) != missing.end()){
-                sol[ins.cycle].addVertex(ins.pos, ins.v);
-                auto it = std::find(missing.begin(), missing.end(), ins.v);
-                missing.erase(it);
+            if(sol[ins.cycle].getLength() < instance.dimension/2){
+                sol[ins.cycle].addVertex(ins.pos, ins.v);  
+                break;                
             }
         }
+     
     }
+
+
+
+    // while(missing.size() > 0){
+    //     for(auto & ins : insertions){
+    //         if(sol[ins.cycle].getLength() < instance.dimension/2 && std::find(missing.begin(), missing.end(), ins.v) != missing.end()){
+    //             sol[ins.cycle].addVertex(ins.pos, ins.v);
+    //             auto it = std::find(missing.begin(), missing.end(), ins.v);
+    //             missing.erase(it);
+    //         }
+    //     }
+    // }
 }
 

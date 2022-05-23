@@ -21,7 +21,7 @@ private:
     Solution2Cycles * bestFoundSolution = nullptr;
     std::vector<int> availableMoveTypes;
 
-    std::vector<int> destroy(Solution2Cycles &, const InstanceTSP &, int);
+    std::vector<int> destroy(Solution2Cycles &, const InstanceTSP &, int, int);
     void repair(Solution2Cycles &, const InstanceTSP &, std::vector<int>);
 
 public:
