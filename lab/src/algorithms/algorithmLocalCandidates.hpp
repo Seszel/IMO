@@ -13,6 +13,8 @@ class AlgorithmLocalCandidates : public Algorithm2cyclesMeta{
 
 private:
 
+    int k = 5;
+
     Solution2Cycles * bestSolution = nullptr;
     const Solution2Cycles * startSolution = nullptr;
 
@@ -39,7 +41,7 @@ public:
     const std::string getName() override { return "local_candidates";}
     void setAvailableMoveTypes(std::vector<int>);
     void setStartingSolution(const Solution2Cycles * s){ this->startSolution = s; }
-    std::vector<std::pair<int, std::vector<std::pair<int, int> > > > findKClosestVertices(int, const InstanceTSP &, std::vector<Cycle > &);
+    std::vector<std::vector<int > > findKClosestForAll(int, const InstanceTSP &, Solution2Cycles &);
     // vector of pairs closest vertices to all vertices
     // vector<pair(vertex cycle, vector<pair(vertex cycle, vertex)>)>
 };

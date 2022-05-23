@@ -6,14 +6,14 @@ const Solution2Cycles AlgorithmLargeScaleNeighborhood::run(const InstanceTSP & i
 
     int duration;
     auto start = std::chrono::steady_clock::now();
-    int K = 10;
+    int K = 3;
 
     while(duration < 20000){
 
         auto missing = this->destroy(currentSolution, instance, K, 1);
         this->repair(currentSolution, instance, missing);
 
-        if(bestSolution.getTotalCost() > currentSolution.getTotalCost()){
+        if(currentSolution.getTotalCost() < bestSolution.getTotalCost()){
             bestSolution = currentSolution;
         }
 
@@ -60,6 +60,10 @@ std::vector<int> AlgorithmLargeScaleNeighborhood::destroy(Solution2Cycles & sol,
             closest.push_back(sol[cn][(start_vertex + i) % sol[cn].getLength()]);
         }
     }
+
+    std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
+        return a.second > b.second;
+    });
 
     std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
         return a.second > b.second;

@@ -30,7 +30,7 @@ int main(){
     file.open(path + "resultFiles/results_lab_4.json", std::ios::out);
 
     std::vector<Algorithm2cycles *> algs_start;
-    algs_start.push_back(new AlgorithmRandom());
+    algs_start.push_back(new AlgorithmSeparateCycles);
     std::vector<Algorithm2cyclesMeta *> algs_meta;
     // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
     // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr));
@@ -39,6 +39,7 @@ int main(){
     // algs_meta.push_back(new AlgorithmMultipleStartLocalSearch(nullptr));
     // algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr));
     algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr));
+    // algs_meta.push_back()
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},
