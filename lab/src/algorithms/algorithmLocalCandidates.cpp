@@ -18,6 +18,9 @@ std::vector<std::vector<int> > AlgorithmLocalCandidates::findKClosestForAll(int 
 
 const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance){
 
+    int swaps_cnt = 0, move_cnt = 0;
+
+
     Solution2Cycles bestSolution = Solution2Cycles(*this->startSolution);
     Solution2Cycles currentSolution = Solution2Cycles(*this->startSolution);
 
@@ -29,7 +32,10 @@ const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance
     while(foundImprovement){
 
         foundImprovement = false;        
+        int min = RAND_MAX;
+        Move best_move;
 
+        
         for (int v = 0 ; v < closestVertices.size(); v++){
 
             std::vector<int> tmp = {v};
@@ -44,33 +50,63 @@ const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance
                 // calculate cost of inserting edge u <-> w to the current solution
                 int val = currentSolution.getTotalCost();
                 int delta = -currentSolution.getTotalCost(); 
-
-                // if w and v belongs to difference cycles perform some heruistic swap
-                // if(wcn != vcn) {
-                //     for(int u_ind; u_ind < closestVertices[w].size(); u_ind ++){
-                //         auto u = closestVertices[w][u_ind];
-                //         if(u != v && )
-                //     }
-                // }
-                if(vcn != wcn)
-                    continue;
-
-                delta += Algorithm2cycles::calculateCostAfterMove(currentSolution, {
-                    w_ind, v_ind, vcn, Solution2Cycles::INSERT_EDGE
-                });
+                int a, b;
+                // if w and v belongs to different cycles perform some heruistic swap
+                if(wcn != vcn) {
+                    a = (vcn == 0 ? v_ind : w_ind);
+                    b = (vcn == 0 ? w_ind : v_ind);
+                    delta += Algorithm2cycles::calculateCostAfterMove(currentSolution, {
+                        a, b, 0, Solution2Cycles::SWAP_BETWEEN_CYCLES
+                    });
+                }
+                else {
+                    delta += Algorithm2cycles::calculateCostAfterMove(currentSolution, {
+                        w_ind, v_ind, vcn, Solution2Cycles::INSERT_EDGE
+                    });                    
+                }
 
                 if(delta < 0){
-                    foundImprovement = true;
-                    currentSolution.moveVertice(w_ind, v_ind, &currentSolution[vcn]);
-
                     
-                    if(val + delta != currentSolution.getTotalCost()){
-                        std::cerr << "o nie";
+                    foundImprovement = true;
+                    if(wcn == vcn){
+                        // if(delta < min){
+                        //     min = delta;
+                        //     best_move = {
+                        //         w_ind, v_ind, vcn, Solution2Cycles::INSERT_EDGE
+                        //     };
+                        // }
+                        currentSolution.moveVertice(w_ind, v_ind, &currentSolution[vcn]);
+                        move_cnt ++;                        
                     }
+                    else {
+                        // if(delta < min){
+                        //     min = delta;
+                        //     best_move = {
+                        //         a, b, 0, Solution2Cycles::SWAP_BETWEEN_CYCLES
+                        //     };
+                        // }
+                        currentSolution.swapVerticesBetweenCycles(a, b);
+                        swaps_cnt ++;
+                    }
+
+
+                    // if(val + delta != currentSolution.getTotalCost()){
+                    //     std::cerr << "o nie";
+                    // }
                 }
             }
-        }        
+        } 
+
+        // if(foundImprovement){
+        //     if(best_move.type == Solution2Cycles::SWAP_BETWEEN_CYCLES){
+        //         currentSolution.swapVerticesBetweenCycles(best_move.a, best_move.b);            
+        //     }
+        //     else {
+        //         currentSolution.moveVertice(best_move.a, best_move.b, &currentSolution[best_move.cyc_num]);
+        //     }
+        // }       
     }
+    std::cerr << "swaps: "<< swaps_cnt << " moves: " << move_cnt << std::endl;
 
     return currentSolution;
 

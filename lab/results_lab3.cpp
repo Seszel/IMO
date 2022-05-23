@@ -30,13 +30,14 @@ int main(){
     file.open(path + "resultFiles/results_lab_3.json", std::ios::out);
 
     std::vector<Algorithm2cycles *> algs_start;
-    algs_start.push_back(new AlgorithmRandom());
+    // algs_start.push_back(new AlgorithmRandom());
+    // algs_start.push_back(new AlgorithmCycleExpansion());
     algs_start.push_back(new AlgorithmSeparateCycles());
     std::vector<Algorithm2cyclesMeta *> algs_meta;
     // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
     algs_meta.push_back(new AlgorithmLocalCandidates(nullptr));
 
-    // algs_meta.push_back(new AlgorithmLocalSteepest(nullptr));
+    algs_meta.push_back(new AlgorithmLocalSteepest(nullptr));
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},

@@ -13,7 +13,7 @@ class AlgorithmLocalCandidates : public Algorithm2cyclesMeta{
 
 private:
 
-    int k = 10;
+    int k = 5;
 
     Solution2Cycles * bestSolution = nullptr;
     const Solution2Cycles * startSolution = nullptr;
