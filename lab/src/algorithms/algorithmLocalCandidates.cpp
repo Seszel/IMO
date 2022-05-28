@@ -47,21 +47,22 @@ const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance
 
                 int w = closestVertices[v][w_ind];
                 int wcn = clos_indx[w_ind].first;
+                int w_indr = clos_indx[w_ind].second;
                 // calculate cost of inserting edge u <-> w to the current solution
                 int val = currentSolution.getTotalCost();
                 int delta = -currentSolution.getTotalCost(); 
                 int a, b;
                 // if w and v belongs to different cycles perform some heruistic swap
                 if(wcn != vcn) {
-                    a = (vcn == 0 ? v_ind : w_ind);
-                    b = (vcn == 0 ? w_ind : v_ind);
+                    a = (vcn == 0 ? v_ind : w_indr);
+                    b = (vcn == 0 ? w_indr : v_ind);
                     delta += Algorithm2cycles::calculateCostAfterMove(currentSolution, {
                         a, b, 0, Solution2Cycles::SWAP_BETWEEN_CYCLES
                     });
                 }
                 else {
                     delta += Algorithm2cycles::calculateCostAfterMove(currentSolution, {
-                        w_ind, v_ind, vcn, Solution2Cycles::INSERT_EDGE
+                        w_indr, v_ind, vcn, Solution2Cycles::INSERT_EDGE
                     });                    
                 }
 
@@ -75,7 +76,7 @@ const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance
                         //         w_ind, v_ind, vcn, Solution2Cycles::INSERT_EDGE
                         //     };
                         // }
-                        currentSolution.moveVertice(w_ind, v_ind, &currentSolution[vcn]);
+                        currentSolution.moveVertice(w_indr, v_ind, &currentSolution[vcn]);
                         move_cnt ++;                        
                     }
                     else {
@@ -106,7 +107,7 @@ const Solution2Cycles AlgorithmLocalCandidates::run(const InstanceTSP & instance
         //     }
         // }       
     }
-    std::cerr << "swaps: "<< swaps_cnt << " moves: " << move_cnt << std::endl;
+    // std::cerr << "swaps: "<< swaps_cnt << " moves: " << move_cnt << std::endl;
 
     return currentSolution;
 

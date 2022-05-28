@@ -13,7 +13,7 @@ class AlgorithmLocalCandidates : public Algorithm2cyclesMeta{
 
 private:
 
-    int k = 5;
+    int k = 10;
 
     Solution2Cycles * bestSolution = nullptr;
     const Solution2Cycles * startSolution = nullptr;
@@ -25,9 +25,10 @@ private:
 public:
 
 
-    AlgorithmLocalCandidates(const Solution2Cycles * startSolution){
+    AlgorithmLocalCandidates(const Solution2Cycles * startSolution, int k){
 
         this->startSolution = startSolution;
+        this->k = k;
     }
 
     virtual ~AlgorithmLocalCandidates(){
@@ -38,7 +39,7 @@ public:
     }
 
     const Solution2Cycles run(const InstanceTSP &) override;
-    const std::string getName() override { return "local_candidates";}
+    const std::string getName() override { return "local_candidates_" + std::to_string(k);}
     void setAvailableMoveTypes(std::vector<int>);
     void setStartingSolution(const Solution2Cycles * s){ this->startSolution = s; }
     std::vector<std::vector<int > > findKClosestForAll(int, const InstanceTSP &, Solution2Cycles &);

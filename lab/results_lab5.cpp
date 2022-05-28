@@ -15,7 +15,7 @@ using namespace nlohmann;
 typedef std::vector<int> NEIGHBOURHOOD;
 
 //to jest zmienna, która oznacza ile iteracji będziemy wykonywać, u nas jest to 100 razy
-const int NUMBER_OF_ITERATIONS = 10;
+const int NUMBER_OF_ITERATIONS = 1;
 
 int main(){
 
@@ -27,28 +27,15 @@ int main(){
 
     auto path = getPathToWorkspaceFolder();
 
-    file.open(path + "resultFiles/results_lab_3.json", std::ios::out);
+    file.open(path + "resultFiles/results_lab_5.json", std::ios::out);
 
     std::vector<Algorithm2cycles *> algs_start;
-    // algs_start.push_back(new AlgorithmRandom());
-    algs_start.push_back(new AlgorithmCycleExpansion());
+    // algs_start.push_back(new AlgorithmCycleExpansion());
     // algs_start.push_back(new AlgorithmSeparateCycles());
+    algs_start.push_back(new AlgorithmRandom());
 
     std::vector<Algorithm2cyclesMeta *> algs_meta;
-
-    algs_meta.push_back(new AlgorithmBlindRunner(nullptr));
-
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 4));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 6));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 8));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 10));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 14));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 20));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 30));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr, 50));
-
-    // algs_meta.push_back(new AlgorithmLocalSteepest(nullptr));
-    // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
+    algs_meta.push_back(new AlgorithmHEA(nullptr));
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},

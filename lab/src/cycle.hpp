@@ -5,6 +5,17 @@
 #include <vector>
 #include <string>
 
+struct Edge {
+    int u;
+    int v;
+    int u_ind;
+    int cyc_num;
+
+    std::string getHash() {
+        return std::to_string(u) + "_" + std::to_string(v);
+    }
+};
+
 class Cycle{
 
 private:
@@ -26,7 +37,7 @@ public:
     void addVertex(std::size_t, const int);
 
     void pushBackVertex(const int);
-    int getLength();
+    int getLength() const;
 
     const std::string cycleToJsonList(const InstanceTSP *);
 

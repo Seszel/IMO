@@ -62,7 +62,7 @@ void Cycle::pushBackVertex(const int vertex){
     this->vertices.push_back(vertex);
 }
 
-int Cycle::getLength(){
+int Cycle::getLength() const{
 
     return this->vertices.size();
 }

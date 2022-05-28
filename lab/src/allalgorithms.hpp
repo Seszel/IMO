@@ -14,5 +14,6 @@
 #include "algorithms/algorithmMultipleStartLocalSearch.hpp"
 #include "algorithms/algorithmLargeScaleNeighborhood.hpp"
 #include "algorithms/algorithmSmallPerturbation.hpp"
+#include "algorithms/algorithmHEA.hpp"
 
 #endif

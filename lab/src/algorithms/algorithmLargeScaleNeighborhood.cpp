@@ -4,13 +4,15 @@ const Solution2Cycles AlgorithmLargeScaleNeighborhood::run(const InstanceTSP & i
 
     Solution2Cycles bestSolution = Solution2Cycles(*this->startSolution), currentSolution = Solution2Cycles(*this->startSolution);
 
-    int duration;
+    int duration = 0;
     auto start = std::chrono::steady_clock::now();
-    int K = 3;
 
-    while(duration < 20000){
+    auto alg_steepest = AlgorithmLocalSteepest(this->startSolution);
+    currentSolution = alg_steepest.run(instance);
 
-        auto missing = this->destroy(currentSolution, instance, K, 1);
+    while(duration < 60000){
+
+        auto missing = this->destroy(currentSolution, instance, K, 0);
         this->repair(currentSolution, instance, missing);
 
         if(currentSolution.getTotalCost() < bestSolution.getTotalCost()){
@@ -48,10 +50,7 @@ std::vector<int> AlgorithmLargeScaleNeighborhood::destroy(Solution2Cycles & sol,
     if(type == 0){
 
         closest = this->findKClosestVertices(v, K, instance);
-        clos_indx = this->findVertices(closest, sol);
-        std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
-            return a.second > b.second;
-        });   
+        clos_indx = this->findVertices(closest, sol);  
     }
     else {
         for(int i = 0; i < K; i++){
@@ -60,10 +59,6 @@ std::vector<int> AlgorithmLargeScaleNeighborhood::destroy(Solution2Cycles & sol,
             closest.push_back(sol[cn][(start_vertex + i) % sol[cn].getLength()]);
         }
     }
-
-    std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
-        return a.second > b.second;
-    });
 
     std::sort(clos_indx.begin(), clos_indx.end(), [](const std::pair<int, int> a, const std::pair<int, int> b){
         return a.second > b.second;
@@ -87,48 +82,48 @@ void AlgorithmLargeScaleNeighborhood::repair(Solution2Cycles & sol, const Instan
     };
 
     
-
     std::vector<Tuple> insertions;
-    for(auto v : missing){
-
+    while(!missing.empty()){
+        
+        
         insertions.clear();insertions.shrink_to_fit();
-        // for each cycle
-        for(int i = 0; i < sol.getCycles().size(); i++){
+        for(auto & v : missing){
 
-            // for each position in cycle
-            for(int pos = 0; pos < sol[i].getLength(); pos ++){
+            Tuple min_tuple;
+            int min = RAND_MAX;
+            // for each cycle
+            for(int i = 0; i < sol.getCycles().size(); i++){
+                
+                if(sol[i].getLength() == instance.dimension/2)
+                    continue;
+                // for each position in cycle
+                for(int pos = 0; pos < sol[i].getLength(); pos ++){
 
-                int suc = sol[i][(pos + 1) % sol[i].getLength()];
-                int pre = sol[i][(pos + sol[i].getLength() - 1) % sol[i].getLength()];
+                    int suc = sol[i][(pos) % sol[i].getLength()];
+                    int pre = sol[i][(pos + sol[i].getLength() - 1) % sol[i].getLength()];
 
-                int diff = instance.matrix[pre][v] + instance.matrix[v][suc] - instance.matrix[pre][suc];
+                    int diff = instance.matrix[pre][v] + instance.matrix[v][suc] - instance.matrix[pre][suc];
 
-                insertions.push_back({v, pos, i, diff});
+                    if(diff < min){
+                        min_tuple = {v, pos, i, diff};
+                        min = diff;
+                    }
+                }
             }
-        }
+            insertions.push_back(min_tuple);            
+        }  
+
         std::sort(insertions.begin(), insertions.end(), [](const Tuple a, const Tuple b){
             return a.delta < b.delta;
         }); 
 
-        for(auto & ins : insertions){
-            if(sol[ins.cycle].getLength() < instance.dimension/2){
-                sol[ins.cycle].addVertex(ins.pos, ins.v);  
-                break;                
-            }
-        }
-     
+        auto ins = insertions[0];
+
+        sol[ins.cycle].addVertex(ins.pos, ins.v);         
+
+        auto it = std::find(missing.begin(), missing.end(), ins.v);
+        missing.erase(it);
+
     }
-
-
-
-    // while(missing.size() > 0){
-    //     for(auto & ins : insertions){
-    //         if(sol[ins.cycle].getLength() < instance.dimension/2 && std::find(missing.begin(), missing.end(), ins.v) != missing.end()){
-    //             sol[ins.cycle].addVertex(ins.pos, ins.v);
-    //             auto it = std::find(missing.begin(), missing.end(), ins.v);
-    //             missing.erase(it);
-    //         }
-    //     }
-    // }
 }
 

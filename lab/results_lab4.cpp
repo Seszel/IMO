@@ -15,7 +15,7 @@ using namespace nlohmann;
 typedef std::vector<int> NEIGHBOURHOOD;
 
 //to jest zmienna, która oznacza ile iteracji będziemy wykonywać, u nas jest to 100 razy
-const int NUMBER_OF_ITERATIONS = 1;
+const int NUMBER_OF_ITERATIONS = 15;
 
 int main(){
 
@@ -30,16 +30,21 @@ int main(){
     file.open(path + "resultFiles/results_lab_4.json", std::ios::out);
 
     std::vector<Algorithm2cycles *> algs_start;
-    algs_start.push_back(new AlgorithmSeparateCycles);
+    // algs_start.push_back(new AlgorithmCycleExpansion());
+    // algs_start.push_back(new AlgorithmSeparateCycles());
+    algs_start.push_back(new AlgorithmRandom());
+
     std::vector<Algorithm2cyclesMeta *> algs_meta;
-    // algs_meta.push_back(new AlgorithmLMSearch(nullptr));
-    // algs_meta.push_back(new AlgorithmLocalCandidates(nullptr));
+    algs_meta.push_back(new AlgorithmMultipleStartLocalSearch(nullptr));
+    algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr, 4));
+    algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr, 8));
+    algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr, 12));
+    algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr, 16));
 
-
-    // algs_meta.push_back(new AlgorithmMultipleStartLocalSearch(nullptr));
-    // algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr));
-    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr));
-    // algs_meta.push_back()
+    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr, 20));
+    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr, 30));
+    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr, 40));
+    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr, 50));
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},

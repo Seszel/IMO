@@ -54,6 +54,10 @@ public:
     void undoMoveVertice(const int, const int, Cycle *);
     void makeMove(const int, const int, const int, Cycle *);
 
+    std::unordered_map<std::string, Edge> getEdges();
+    std::unordered_map<std::string, Edge> minusEdges(Solution2Cycles &);
+    std::unordered_map<std::string, Edge> sumEdges(Solution2Cycles &);
+
     int calculateFromZero();
 
     const std::string saveAsJson();

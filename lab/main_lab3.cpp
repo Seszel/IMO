@@ -22,7 +22,7 @@ int main(int argc, char ** argv){
     auto solution = cycleExpansion.run(instance);
     std::cout << solution.getTotalCost() << std::endl;
 
-    AlgorithmLocalCandidates localCandidates(&solution);
+    AlgorithmLocalCandidates localCandidates(&solution, 10);
     auto candidatesSolution = localCandidates.run(instance);
     std::cout << candidatesSolution.getTotalCost() << std::endl;
 

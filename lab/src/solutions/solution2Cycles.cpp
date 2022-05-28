@@ -194,3 +194,49 @@ void Solution2Cycles::undoMoveVertice(const int start, const int end, Cycle * cy
 
     cyc->undoMoveVertice(start, end);
 }
+
+std::unordered_map<std::string, Edge> Solution2Cycles::getEdges() {
+
+    std::unordered_map<std::string, Edge> out;
+    for(int k = 0; k < cycles.size(); k++){
+        for(int i = 0; i < cycles[k].getLength(); i ++){
+            Edge e = {cycles[k][i], cycles[k][(i + 1) % cycles[k].getLength()], i, k};
+            Edge d = {cycles[k][(i + 1) % cycles[k].getLength()], cycles[k][i], i, k};
+            out[e.getHash()] = e;
+            out[d.getHash()] = d;
+        }
+    }
+    return out;
+}
+
+std::unordered_map<std::string, Edge> Solution2Cycles::minusEdges(Solution2Cycles & sol){
+
+    auto edges_me = this->getEdges();
+    auto edges_sol = sol.getEdges();
+
+    for(auto it = edges_me.begin(); it != edges_me.end();){
+        auto edge = *it;
+        if(edges_sol.find(edge.first) != edges_sol.end()){
+            it = edges_me.erase(it);
+        }
+        else it++;
+    }
+
+    return edges_me;
+}
+
+std::unordered_map<std::string, Edge> Solution2Cycles::sumEdges(Solution2Cycles & sol) {
+
+    auto edges_me = this->getEdges();
+    auto edges_sol = sol.getEdges();
+
+    for(auto it = edges_me.begin(); it != edges_me.end();){
+        auto edge = *it;
+        if(edges_sol.find(edge.first) == edges_sol.end()){
+            it = edges_me.erase(it);
+        }
+        else it++;
+    }
+
+    return edges_me;
+}

@@ -17,7 +17,7 @@ class AlgorithmMultipleStartLocalSearch : public Algorithm2cyclesMeta {
 private:
 
     const Solution2Cycles * startSolution = nullptr;
-    int ITERATIONS = 100;
+    int ITERATIONS = 20;
     Solution2Cycles * bestFoundSolution = nullptr;
     std::vector<int> availableMoveTypes;
 
