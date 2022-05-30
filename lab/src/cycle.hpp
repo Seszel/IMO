@@ -50,6 +50,7 @@ public:
     int calculateCostFromZero();
 
     const std::vector<int > getCycleVertices();
+    std::vector<int> getVertices() const {return vertices;}
 
     friend class Solution2Cycles;
 };

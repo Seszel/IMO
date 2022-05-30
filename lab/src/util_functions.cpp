@@ -46,3 +46,14 @@ const int isApplicable(Solution2Cycles & solution, Move move){
 
     return APPLICABLE;
 }
+
+int getNumberOfCommonVertices(std::vector<int> a, std::vector<int> b){
+
+    int cnt = 0;
+    for(int i = 0; i < a.size(); i ++){
+        auto it = std::find(b.begin(), b.end(), a[i]);
+        if(it != b.end())
+            cnt ++;
+    }
+    return cnt;
+}

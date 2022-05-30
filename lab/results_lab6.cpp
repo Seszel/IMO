@@ -22,7 +22,7 @@ int iteration = 0;
 
 const int THREADS_NUM = 8;
 
-const int NUMBER_OF_ITERATIONS = 8;
+const int NUMBER_OF_ITERATIONS = 1000;
 
 auto alg_random = AlgorithmRandom();
 auto alg_cyc_exp = AlgorithmCycleExpansion();
@@ -69,16 +69,33 @@ void local_search(std::string alg_name, InstanceTSP A, InstanceTSP B){
 
     while(it < NUMBER_OF_ITERATIONS){ 
 
-        std::cerr << it << " ";
-        sol = alg_random.run(A);
-        alg_lps.setStartingSolution(&sol);
-        sol = alg_lps.run(A);
+        if(alg_name == "lp"){
+            sol = alg_random.run(A);
+            alg_lps.setStartingSolution(&sol);
+            sol = alg_lps.run(A);            
+        }
+        else if(alg_name == "greedy"){
+            sol = alg_greedy_nn.run(A);
+        }
+        else if(alg_name == "cyc_exp"){
+            sol = alg_cyc_exp.run(A);
+        }
+
         solutionsA[it] = sol;
         dataA[it].first = sol.getTotalCost();
 
-        sol = alg_random.run(B);
-        alg_lps.setStartingSolution(&sol);
-        sol = alg_lps.run(B);
+        if(alg_name == "lp"){
+            sol = alg_random.run(B);
+            alg_lps.setStartingSolution(&sol);
+            sol = alg_lps.run(B);            
+        }
+        else if(alg_name == "greedy"){
+            sol = alg_greedy_nn.run(B);
+        }
+        else if(alg_name == "cyc_exp"){
+            sol = alg_cyc_exp.run(B);
+        }
+
         solutionsB[it] = sol;
         dataB[it].first = sol.getTotalCost();
 
@@ -118,6 +135,9 @@ int main(){
 
     json algorithmsData;
 
+    std::vector<float> corr_to_besta(NUMBER_OF_ITERATIONS, 0.0);
+    std::vector<float> corr_to_bestb(NUMBER_OF_ITERATIONS, 0.0);
+
     std::vector<std::string> alg_types = {"lp", "greedy", "cyc_exp"};
     std::vector<std::string> corr_types = {"edges", "vertices"};
 
@@ -130,14 +150,29 @@ int main(){
                 threads[i] = std::thread(local_search, alg_type, A, B);
             }
 
+            std::cerr << alg_type << " " << corr_type << std::endl;
+
             for(int i = 0; i < THREADS_NUM; i++){
                 threads[i].join();
             }
-            for(int i = 0; i < THREADS_NUM; i++){
-                // threads[i].detach();
+            int mina = RAND_MAX;
+            int minb = RAND_MAX;
+            Solution2Cycles besta, bestb;
+            for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+                if(solutionsA[i].getTotalCost() < mina){
+                    besta = solutionsA[i];
+                    mina = i;
+                }
+                if(solutionsB[i].getTotalCost() < minb){
+                    bestb = solutionsB[i];
+                    minb = i;
+                }
             }
 
             for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+                corr_to_besta[i] = correlation(besta, solutionsA[i], corr_type);
+                corr_to_bestb[i] = correlation(bestb, solutionsB[i], corr_type);
+
                 float avga = 0;
                 float avgb = 0;
                 for(int j = 0; j < NUMBER_OF_ITERATIONS; j ++){
@@ -150,8 +185,10 @@ int main(){
                 dataA[i].second = avga / (NUMBER_OF_ITERATIONS - 1);
                 dataB[i].second = avgb / (NUMBER_OF_ITERATIONS - 1);
             }
-            algorithmsData[alg_type][corr_type]["kroA200"] = dataA;
-            algorithmsData[alg_type][corr_type]["kroB200"] = dataB;
+            algorithmsData[alg_type][corr_type]["kroA200"]["data"] = dataA;
+            algorithmsData[alg_type][corr_type]["kroB200"]["data"] = dataB;
+            algorithmsData[alg_type][corr_type]["kroA200"]["to_best"] = corr_to_besta;
+            algorithmsData[alg_type][corr_type]["kroB200"]["to_best"] = corr_to_bestb;
         }
     }
 

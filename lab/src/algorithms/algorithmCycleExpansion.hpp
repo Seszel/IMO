@@ -16,6 +16,7 @@ public:
     AlgorithmCycleExpansion(){}
     const Solution2Cycles run(const InstanceTSP &) override;
     const std::string getName() override{ return name;}
+    const Solution2Cycles run1cycle(const InstanceTSP &);
 };
 
 #endif

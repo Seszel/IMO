@@ -12,6 +12,7 @@
 
 extern const std::string getPathToWorkspaceFolder();
 extern const std::size_t getHashOfMove(Move);
+extern int getNumberOfCommonVertices(std::vector<int> a, std::vector<int> b);
 
 const int APPLICABLE = 0;
 const int NOT_APPLICABLE = 1;
