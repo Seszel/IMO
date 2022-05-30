@@ -15,7 +15,7 @@ using namespace nlohmann;
 typedef std::vector<int> NEIGHBOURHOOD;
 
 //to jest zmienna, która oznacza ile iteracji będziemy wykonywać, u nas jest to 100 razy
-const int NUMBER_OF_ITERATIONS = 1;
+const int NUMBER_OF_ITERATIONS = 10;
 
 int main(){
 
@@ -35,7 +35,18 @@ int main(){
     algs_start.push_back(new AlgorithmRandom());
 
     std::vector<Algorithm2cyclesMeta *> algs_meta;
-    algs_meta.push_back(new AlgorithmHEA(nullptr));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 60000, false, "cyc_exp"));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 60000, true, "cyc_exp"));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 40, 60000, false, "cyc_exp"));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 40, 60000, true, "cyc_exp"));
+
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 60000, false, "greedy"));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 60000, true, "greedy"));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 40, 60000, false, "greedy"));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 40, 60000, true, "greedy"));
+
+
+    // algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 60000, false, "lp")); 
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},

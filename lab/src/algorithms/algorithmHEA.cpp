@@ -10,19 +10,25 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
 
     auto alg_cycexp = AlgorithmCycleExpansion();
     auto alg_greedy = AlgorithmGreedyNN();
-    // auto alg_start = AlgorithmRandom();
+    auto alg_random = AlgorithmRandom();
     auto alg_lp = AlgorithmLocalSteepest(nullptr);
+    auto alg_gp = AlgorithmLocalGreedy(nullptr);
+    auto alg_lm = AlgorithmLMSearch(nullptr);
 
     // generate initial population
     std::vector<Solution2Cycles> population;
     for(int i = 0; i < population_size; i++){
         Solution2Cycles sol;
-        if(i < 100)
+        
+        if(this->alg_init_pop == "cyc_exp")
             sol = alg_cycexp.run(instance);
-        else 
+        else if(this->alg_init_pop == "greedy")
             sol = alg_greedy.run(instance);
-        // alg_lp.setStartingSolution(&sol);
-        // sol = alg_lp.run(instance);
+        else if(this->alg_init_pop == "lp"){
+            sol = alg_random.run(instance);
+            alg_lm.setStartingSolution(&sol);
+            sol = alg_lm.run(instance);  
+        }
         population.push_back(sol);
     }
 
@@ -49,8 +55,9 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
     }
 
     int iteration = 0;
+    int n_iter_without_impr = 0;
 
-    while(duration < 30000){
+    while(duration < max_time && n_iter_without_impr < population_size * population_size){
 
         int dad_ind = rand() % population_size;
         int mom_ind = rand() % population_size;
@@ -84,6 +91,11 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
 
         this->repair(child, instance, vertices_to_delete);
 
+        if(this->lp_after_combine){
+            alg_lp.setStartingSolution(&child);
+            child = alg_lp.run(instance);
+        }
+
         std::sort(pop_ptr.begin(), pop_ptr.end(), [](Solution2Cycles * a, Solution2Cycles * b){
             return a->getTotalCost() < b->getTotalCost();
         });
@@ -106,19 +118,14 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
 
                 // update cov matrix
 
-
-                _min = RAND_MAX;
-                for(int i = 0; i < population_size; i++){
-                    for(int j = 0; j < population_size; j++){
-                        if(_min > cov_matrix[i][j])
-                            _min = cov_matrix[i][j];
-                    }
-                }
-                if(_min > 195)
-                    break;                
+                for(int j = 0; j < population_size; j++){
+                    cov_matrix[d][j] = cov_vector[j];
+                    cov_matrix[j][d] = cov_vector[j];
+                }  
+                            
             }
             else {
-                this->perturbate(child, 10, instance);
+                this->perturbate(child, 8, instance);
                 alg_lp.setStartingSolution(&child);
                 child = alg_lp.run(instance);
             }
@@ -127,7 +134,7 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
         if(pop_ptr.front()->getTotalCost() < bestSolution.getTotalCost()){
             bestSolution = *pop_ptr.front();
             std::cerr << "=";
-
+            n_iter_without_impr = -1;
         }
 
         auto end = std::chrono::steady_clock::now();
@@ -135,6 +142,7 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
         duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     
         iteration += 1;
+        n_iter_without_impr += 1;
 
     }
 
