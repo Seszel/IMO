@@ -114,6 +114,9 @@ int main(){
                     std::cerr << std::endl;
                     auto best_json = json::parse(best.saveAsJson());
 
+                    for(auto i : costs)
+                        std::cerr << i << " ";
+                    std::cerr << std::endl;
                     best_json["instance"]["f"] = costs;
                     best_json["instance"]["f_start"] = costs_start;
                     best_json["instance"]["t_start"] = t_start;

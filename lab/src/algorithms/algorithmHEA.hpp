@@ -7,6 +7,7 @@
 #include "algorithmRandom.hpp"
 #include "algorithmLocalSteepest.hpp"
 #include "algorithmCycleExpansion.hpp"
+#include "algorithmGreedyNN.hpp"
 
 #include <algorithm>
 #include <cstdlib>
@@ -25,6 +26,8 @@ private:
 
 public:
 
+    int number_of_iterations = 0;
+
     AlgorithmHEA(Solution2Cycles * startSolution){
         this->startSolution = startSolution;
     }
@@ -41,6 +44,7 @@ public:
     void setStartingSolution(const Solution2Cycles *) override;
 
     void repair(Solution2Cycles &, const InstanceTSP &, std::vector<int>);
+    void perturbate(Solution2Cycles &, int, const InstanceTSP &);
 };
 
 #endif

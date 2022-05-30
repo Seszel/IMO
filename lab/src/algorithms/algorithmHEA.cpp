@@ -8,14 +8,21 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
 
     auto start = std::chrono::steady_clock::now();
 
-    auto alg_start = AlgorithmCycleExpansion();
+    auto alg_cycexp = AlgorithmCycleExpansion();
+    auto alg_greedy = AlgorithmGreedyNN();
     // auto alg_start = AlgorithmRandom();
-    // auto alg_lp = AlgorithmLocalSteepest(nullptr);
+    auto alg_lp = AlgorithmLocalSteepest(nullptr);
 
     // generate initial population
     std::vector<Solution2Cycles> population;
     for(int i = 0; i < population_size; i++){
-        auto sol = alg_start.run(instance);
+        Solution2Cycles sol;
+        if(i < 100)
+            sol = alg_cycexp.run(instance);
+        else 
+            sol = alg_greedy.run(instance);
+        // alg_lp.setStartingSolution(&sol);
+        // sol = alg_lp.run(instance);
         population.push_back(sol);
     }
 
@@ -24,7 +31,26 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
         pop_ptr.push_back(&population[i]);
     }
 
-    while(duration < 120000){
+    std::vector<std::vector<float> > cov_matrix;
+    cov_matrix.resize(population_size);
+    for(auto & r : cov_matrix)
+        r.resize(population_size);
+    
+    for(int i = 0; i < population_size; i ++){
+        for(int j = i; j < population_size; j++){
+            if(i == j){
+                cov_matrix[i][j] = 0;
+                continue;
+            }
+            int cov = population[i].sumEdges(population[j]).size() / 2.0;
+            cov_matrix[i][j] = cov;
+            cov_matrix[j][i] = cov;
+        }
+    }
+
+    int iteration = 0;
+
+    while(duration < 30000){
 
         int dad_ind = rand() % population_size;
         int mom_ind = rand() % population_size;
@@ -63,18 +89,57 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
         });
 
         if(child.getTotalCost() < pop_ptr.back()->getTotalCost()){
-            population.back() = child;
+
+            std::vector<float> cov_vector(population_size, 0);
+            int d = pop_ptr.back() - &population[0];
+            float _min = RAND_MAX;
+            for(int i = 0; i < population_size; i++){
+                int cov = population[i].sumEdges(population[d]).size() / 2.0;
+                cov_vector[i] = cov;
+                if(_min > cov){
+                    _min = cov;
+                }
+            }
+            if(_min < 185){
+
+                *pop_ptr.back() = child;
+
+                // update cov matrix
+
+
+                _min = RAND_MAX;
+                for(int i = 0; i < population_size; i++){
+                    for(int j = 0; j < population_size; j++){
+                        if(_min > cov_matrix[i][j])
+                            _min = cov_matrix[i][j];
+                    }
+                }
+                if(_min > 195)
+                    break;                
+            }
+            else {
+                this->perturbate(child, 10, instance);
+                alg_lp.setStartingSolution(&child);
+                child = alg_lp.run(instance);
+            }
         }
 
         if(pop_ptr.front()->getTotalCost() < bestSolution.getTotalCost()){
             bestSolution = *pop_ptr.front();
+            std::cerr << "=";
+
         }
 
         auto end = std::chrono::steady_clock::now();
 
         duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+    
+        iteration += 1;
+
     }
 
+    std::cerr << iteration << std::endl;
+    this->number_of_iterations = iteration;
     this->bestFoundSolution = new Solution2Cycles(bestSolution);
 
     return bestSolution;
@@ -143,4 +208,22 @@ void AlgorithmHEA::repair(Solution2Cycles & sol, const InstanceTSP & instance, s
         missing.erase(it);
 
     }
+}
+
+void AlgorithmHEA::perturbate(Solution2Cycles & sol, int size, const InstanceTSP & instance){
+
+    int start_vertex = std::rand() % sol[0].getLength();
+    int cn = std::rand() % 2;
+    int v = sol[cn][start_vertex];
+
+    auto closest = this->findKClosestVertices(v, size, instance);
+    auto clos_indx = this->findVertices(closest, sol);
+
+    std::random_shuffle(closest.begin(), closest.end());
+
+    for(int i = 0; i < size; i++){
+        sol[clos_indx[i].first][clos_indx[i].second] = closest[i];
+    }
+
+    sol.calculateFromZero();
 }
