@@ -235,3 +235,8 @@ void AlgorithmHEA::perturbate(Solution2Cycles & sol, int size, const InstanceTSP
 
     sol.calculateFromZero();
 }
+
+const Solution2Cycles AlgorithmHEA::run1cycle(const InstanceTSP & instance){
+
+    
+}
