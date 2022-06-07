@@ -15,5 +15,6 @@
 #include "algorithms/algorithmLargeScaleNeighborhood.hpp"
 #include "algorithms/algorithmSmallPerturbation.hpp"
 #include "algorithms/algorithmHEA.hpp"
+#include "algorithms/myAlgorithm.hpp"
 
 #endif

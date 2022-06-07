@@ -44,8 +44,11 @@ int main(){
     B.readFromFile(pathB);
     std::cout << "Data loaded." << std::endl;
 
-    auto alg_cyc_exp = AlgorithmCycleExpansion();
-    auto sol = alg_cyc_exp.run1cycle(A);
+    auto myalg = MyAlgorithm(nullptr);
+    auto cyc_exp = AlgorithmCycleExpansion();
+    auto sol = cyc_exp.run(A);
+    myalg.setStartingSolution(&sol);
+    sol = myalg.run(A);
 
     std::cerr << sol.getTotalCost() << std::endl;
 

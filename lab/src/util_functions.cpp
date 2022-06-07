@@ -57,3 +57,43 @@ int getNumberOfCommonVertices(std::vector<int> a, std::vector<int> b){
     }
     return cnt;
 }
+
+void dfs(int v, int p, std::vector<bool> & visited, int timer, std::vector<int> & low, 
+        std::vector<int> & tin, std::vector<std::vector<int> > & adj,
+        std::vector<std::pair<int, int> > & bridges) {
+    visited[v] = true;
+    tin[v] = low[v] = timer++;
+    for (int to : adj[v]) {
+        if (to == p) continue;
+        if (visited[to]) {
+            low[v] = std::min(low[v], tin[to]);
+        } else {
+            dfs(to, v, visited, timer, low, tin, adj, bridges);
+            low[v] = std::min(low[v], low[to]);
+            if (low[to] > tin[v])
+                bridges.push_back({v, to});
+        }
+    }
+}
+
+void dfs_cutpoints(int v, int p, std::vector<bool> & visited, int timer, std::vector<int> & low, 
+        std::vector<int> & tin, std::vector<std::vector<int> > & adj,
+        std::vector<int> & ap) {
+    visited[v] = true;
+    tin[v] = low[v] = timer++;
+    int children=0;
+    for (int to : adj[v]) {
+        if (to == p) continue;
+        if (visited[to]) {
+            low[v] = std::min(low[v], tin[to]);
+        } else {
+            dfs_cutpoints(to, v, visited, timer, low, tin, adj, ap);
+            low[v] = std::min(low[v], low[to]);
+            if (low[to] >= tin[v] && p!=-1)
+                ap.push_back(v);
+            ++children;
+        }
+    }
+    if(p == -1 && children > 1)
+        ap.push_back(v);
+}
