@@ -57,7 +57,9 @@ public:
 
     const Solution2Cycles run(const InstanceTSP &) override;
     const Solution2Cycles run1cycle(const InstanceTSP &);
-    const std::string getName() override { return "HEA" + this->alg_init_pop + "_" + std::to_string(int(population_size)) + "_" + std::to_string(lp_after_combine);}
+    const std::string getName() override { return "HEA" + this->alg_init_pop + "_" + 
+            std::to_string(int(population_size)) + "_" + std::to_string(lp_after_combine)
+            + "_" + std::to_string(N_BATCHES);}
     void setAvailableMoveTypes(std::vector<int>) override;
     void setStartingSolution(const Solution2Cycles *) override;
 

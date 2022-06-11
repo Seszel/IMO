@@ -15,7 +15,7 @@ using namespace nlohmann;
 typedef std::vector<int> NEIGHBOURHOOD;
 
 //to jest zmienna, która oznacza ile iteracji będziemy wykonywać, u nas jest to 100 razy
-const int NUMBER_OF_ITERATIONS = 1;
+const int NUMBER_OF_ITERATIONS = 10;
 
 int main(){
 
@@ -35,10 +35,15 @@ int main(){
     algs_start.push_back(new AlgorithmRandom());
 
     std::vector<Algorithm2cyclesMeta *> algs_meta;
-    // algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 10000, false, "cyc_exp", 2, 2));
-    // algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 10000, false, "cyc_exp", 7, 2));
-    algs_meta.push_back(new AlgorithmHEA(nullptr, 7, 300000, true, "cyc_exp", 1,1,3));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 81005, true, "cyc_exp", 1, 1, 1));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 10, 81005, true, "cyc_exp", 1, 1, 2));
 
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 40, 81005, true, "cyc_exp"));
+    algs_meta.push_back(new AlgorithmLargeScaleNeighborhood(nullptr, 40));
+    algs_meta.push_back(new AlgorithmSmallPerturbation(nullptr, 8));
+
+
+    // algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 60000, false, "lp")); 
 
     std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
         {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},
@@ -57,64 +62,87 @@ int main(){
     instances[1].readFromFile(pathB);
     std::cout << "Data loaded." << std::endl;
 
-    auto myalg = MyAlgorithm(nullptr);
-    auto hea = AlgorithmHEA(nullptr, 20, 60000, true, "regret");
-    auto cyc_exp = AlgorithmCycleExpansion();
+    json algorithmsData;
 
-    Solution2Cycles sol;
-    int iterations = 10;
+    algorithmsData["algorithm"] = {};
 
-    for(int i = 0; i < iterations; i++){
-        sol = hea.run(instances[0]);
-        std::cerr << sol.getTotalCost() << " ";
+    Solution2Cycles best;
 
+    std::vector<int> costs, costs_start;
+    std::vector<float> t_start, t_meta;
+    //generate results for greedy
+    for(auto algorithm : algs_start){
+
+        for(auto algorithm_meta : algs_meta){
+
+            std::cerr << algorithm_meta->getName() << std::endl;
+
+            for(const auto & nghbrhd : neighbourhoods){
+
+                std::vector<json> tmp;
+
+                for(auto & instance : instances){
+
+                    int min = 1e9;
+
+                    costs.clear();costs_start.clear();
+                    t_meta.clear();t_start.clear();
+                    
+                    for(int i = 0; i < NUMBER_OF_ITERATIONS; i++){
+
+                        std::cerr << i << " ";
+
+                        auto start = std::chrono::steady_clock::now();
+                        Solution2Cycles s = algorithm->run(instance);
+                        auto end = std::chrono::steady_clock::now();
+
+                        t_start.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+
+                        costs_start.push_back(s.getTotalCost());
+
+                        algorithm_meta->setStartingSolution(&s);
+                        algorithm_meta->setAvailableMoveTypes(nghbrhd.second);
+
+                        start = std::chrono::steady_clock::now();
+                        Solution2Cycles finals = algorithm_meta->run(instance); 
+                        end = std::chrono::steady_clock::now();
+
+                        t_meta.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+
+                        auto cost = finals.getTotalCost();
+
+                        costs.push_back(cost);
+
+                        if(cost < min){
+                            min = cost;
+                            best = finals;
+                        }
+                    }
+
+                    std::cerr << std::endl;
+                    auto best_json = json::parse(best.saveAsJson());
+
+                    for(auto i : costs)
+                        std::cerr << i << " ";
+                    std::cerr << std::endl;
+                    best_json["instance"]["f"] = costs;
+                    best_json["instance"]["f_start"] = costs_start;
+                    best_json["instance"]["t_start"] = t_start;
+                    best_json["instance"]["t_meta"] = t_meta;
+                    tmp.push_back(best_json["instance"]);
+                }
+                json h;
+                h["instance"] = tmp;
+                h["type"] = algorithm->getName();
+                h["type_meta"] = algorithm_meta->getName();
+                h["neighbourhood"] = nghbrhd.first;
+                algorithmsData["algorithm"].push_back(h);
+            }
+        }
     }
-    std::cerr << std::endl;
 
-    for(int i = 0; i < iterations; i++){
-        sol = hea.run(instances[1]);
-        std::cerr << sol.getTotalCost() << " ";
-    }
-    
-    auto regret = Algorithm2Regret();
-    float alpha, beta;
-    alpha = 1.0f;
-    beta = 1.0f;
-    regret.setParams(1.0f,1.0f);
-    sol = regret.run(instances[0]);
-    int arange = 15;
-    struct score {
-        float avg;
-        float alpha;
-        float beta;
-    };
-    // score best_score = {1e9, 1.f, 1.f};
-    // for(int i = 0; i < arange; i++){
-    //     for(int j = 0; j < arange; j++){
-    //         float sum = 0;
-    //         float a = alpha / arange * float(i);
-    //         float b = beta / arange * float(j);
-    //         for(int k = 0; k < iterations; k++){
-    //             regret.setParams(a, b);
-    //             sol = regret.run(A);                
-    //             sum += sol.getTotalCost();
-
-    //             sol = regret.run(B);
-    //             sum += sol.getTotalCost();
-    //         }
-    //         float avg = sum / (iterations * 2);
-    //         if(avg < best_score.avg){
-    //             best_score.avg = avg;
-    //             best_score.alpha = a;
-    //             best_score.beta = b;
-    //         }
-    //         std::cerr << "regret (" + std::to_string(a) << ", " + std::to_string(b) << "): " << avg << std::endl;            
-    //     }
-    // }
-    // std::cerr << "best score: (" << std::to_string(best_score.avg) << 
-    //     ", " << std::to_string(best_score.alpha) << ", " << 
-    //     std::to_string(best_score.beta) << ")" << std::endl;
-    
+    file << algorithmsData.dump();
+    file.close();
 
     return 0;
 }

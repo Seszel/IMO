@@ -12,7 +12,7 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
     auto alg_greedy = AlgorithmGreedyNN();
     auto alg_random = AlgorithmRandom();
     auto alg_regret = Algorithm2Regret();
-    alg_regret.setParams(5.33, 7.33);
+    alg_regret.setParams(0.33, 0.46);
     auto alg_lp = AlgorithmLocalSteepest(nullptr);
     auto alg_gp = AlgorithmLocalGreedy(nullptr);
     auto alg_lm = AlgorithmLMSearch(nullptr);
@@ -145,10 +145,12 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
                 //     from++;
                 // }
                 std::cerr << "|";
-                std::random_shuffle(pop_ptr.begin(), pop_ptr.end());                    
-                // this->perturbate(child, 8, instance);
-                // alg_lp.setStartingSolution(&child);
-                // child = alg_lp.run(instance);
+                std::random_shuffle(pop_ptr.begin(), pop_ptr.end()); 
+                for(int i = 0; i < population_size/2; i++){
+                    this->perturbate(*pop_ptr[i], 8, instance);
+                    alg_lp.setStartingSolution(pop_ptr[i]);
+                    *pop_ptr[i] = alg_lp.run(instance);
+                }                   
 
             }
         }
