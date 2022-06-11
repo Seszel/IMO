@@ -2,8 +2,6 @@
 
 const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
 
-    Solution2Cycles bestSolution = Solution2Cycles(*this->startSolution), currentSolution = Solution2Cycles(*this->startSolution);
-
     int duration = 0;
 
     auto start = std::chrono::steady_clock::now();
@@ -11,6 +9,8 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
     auto alg_cycexp = AlgorithmCycleExpansion();
     auto alg_greedy = AlgorithmGreedyNN();
     auto alg_random = AlgorithmRandom();
+    auto alg_regret = Algorithm2Regret();
+    alg_regret.setParams(5.33, 7.33);
     auto alg_lp = AlgorithmLocalSteepest(nullptr);
     auto alg_gp = AlgorithmLocalGreedy(nullptr);
     auto alg_lm = AlgorithmLMSearch(nullptr);
@@ -29,8 +29,12 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
             alg_lm.setStartingSolution(&sol);
             sol = alg_lm.run(instance);  
         }
+        else if(this->alg_init_pop == "regret"){
+            sol = alg_regret.run(instance);
+        }
         population.push_back(sol);
     }
+    auto bestSolution = population[0];
 
     std::vector<Solution2Cycles *> pop_ptr;
     for(int i = 0; i < population_size; i++){
@@ -57,7 +61,7 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
     int iteration = 0;
     int n_iter_without_impr = 0;
 
-    while(duration < max_time && n_iter_without_impr < population_size * population_size){
+    while(duration < max_time){
 
         int dad_ind = rand() % population_size;
         int mom_ind = rand() % population_size;
@@ -124,11 +128,11 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
                 }  
                             
             }
-            else {
-                this->perturbate(child, 8, instance);
-                alg_lp.setStartingSolution(&child);
-                child = alg_lp.run(instance);
-            }
+            // else {
+            //     this->perturbate(child, 8, instance);
+            //     alg_lp.setStartingSolution(&child);
+            //     child = alg_lp.run(instance);
+            // }
         }
 
         if(pop_ptr.front()->getTotalCost() < bestSolution.getTotalCost()){

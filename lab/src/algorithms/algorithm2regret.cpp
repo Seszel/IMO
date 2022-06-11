@@ -68,7 +68,7 @@ const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
                     return a.cost < b.cost;
                 });
 
-                int regret = insCosts[1].cost - insCosts.front().cost;
+                int regret = alpha * insCosts[1].cost - beta * insCosts.front().cost;
                 if(regret > maxRegret){
                     maxRegret = regret;
                     pos = insCosts.front().pos;
@@ -94,4 +94,10 @@ const Solution2Cycles Algorithm2Regret::run(const InstanceTSP & instance){
     finalSolution.setInstanceName(instance.getName());
 
     return finalSolution;
+}
+
+void Algorithm2Regret::setParams(const float a, const float b){
+
+    this->alpha = a;
+    this->beta = b;
 }

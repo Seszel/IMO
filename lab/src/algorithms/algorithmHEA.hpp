@@ -10,6 +10,7 @@
 #include "algorithmGreedyNN.hpp"
 #include "algorithmLocalGreedy.hpp"
 #include "algorithmLMSearch.hpp"
+#include "algorithm2regret.hpp"
 
 #include <algorithm>
 #include <cstdlib>

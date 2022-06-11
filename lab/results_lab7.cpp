@@ -45,12 +45,63 @@ int main(){
     std::cout << "Data loaded." << std::endl;
 
     auto myalg = MyAlgorithm(nullptr);
+    auto hea = AlgorithmHEA(nullptr, 20, 60000, true, "regret");
     auto cyc_exp = AlgorithmCycleExpansion();
-    auto sol = cyc_exp.run(A);
-    myalg.setStartingSolution(&sol);
-    sol = myalg.run(A);
 
-    std::cerr << sol.getTotalCost() << std::endl;
+    Solution2Cycles sol;
+    int iterations = 10;
+
+    for(int i = 0; i < iterations; i++){
+        sol = hea.run(A);
+        std::cerr << sol.getTotalCost() << " ";
+
+    }
+    std::cerr << std::endl;
+
+    for(int i = 0; i < iterations; i++){
+        sol = hea.run(B);
+        std::cerr << sol.getTotalCost() << " ";
+    }
+    
+    auto regret = Algorithm2Regret();
+    float alpha, beta;
+    alpha = 1.0f;
+    beta = 1.0f;
+    regret.setParams(1.0f,1.0f);
+    sol = regret.run(A);
+    int arange = 15;
+    struct score {
+        float avg;
+        float alpha;
+        float beta;
+    };
+    // score best_score = {1e9, 1.f, 1.f};
+    // for(int i = 0; i < arange; i++){
+    //     for(int j = 0; j < arange; j++){
+    //         float sum = 0;
+    //         float a = alpha / arange * float(i);
+    //         float b = beta / arange * float(j);
+    //         for(int k = 0; k < iterations; k++){
+    //             regret.setParams(a, b);
+    //             sol = regret.run(A);                
+    //             sum += sol.getTotalCost();
+
+    //             sol = regret.run(B);
+    //             sum += sol.getTotalCost();
+    //         }
+    //         float avg = sum / (iterations * 2);
+    //         if(avg < best_score.avg){
+    //             best_score.avg = avg;
+    //             best_score.alpha = a;
+    //             best_score.beta = b;
+    //         }
+    //         std::cerr << "regret (" + std::to_string(a) << ", " + std::to_string(b) << "): " << avg << std::endl;            
+    //     }
+    // }
+    // std::cerr << "best score: (" << std::to_string(best_score.avg) << 
+    //     ", " << std::to_string(best_score.alpha) << ", " << 
+    //     std::to_string(best_score.beta) << ")" << std::endl;
+    
 
     return 0;
 }
