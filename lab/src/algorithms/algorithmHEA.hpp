@@ -28,18 +28,24 @@ private:
     int max_time = 60000;
     bool lp_after_combine = false;
     std::string alg_init_pop = "cyc_exp";
+    int cyc_exp_freq = 1;
+    int cyc_exp_ub = 1;
+    int N_BATCHES = 1;
 
 public:
 
     int number_of_iterations = 0;
 
     AlgorithmHEA(Solution2Cycles * startSolution, int pop_size, int max_time, bool lp_after_combine,
-                                std::string alg_init_pop){
+                                std::string alg_init_pop, int f=1, int ub=1, int nb=1){
         this->startSolution = startSolution;
         this->max_time = max_time;
         this->population_size = pop_size;
         this->lp_after_combine = lp_after_combine;
         this->alg_init_pop = alg_init_pop;
+        this->cyc_exp_freq = f;
+        this->cyc_exp_ub = ub;
+        this->N_BATCHES = nb;
     }
 
     virtual ~AlgorithmHEA(){

@@ -15,7 +15,7 @@ const Solution2Cycles MyAlgorithm::run(const InstanceTSP & instance){
     std::vector<std::vector<int> > adj_matrix(instance.dimension);
     for(auto & v : adj_matrix)
         v.resize(instance.dimension, 0);
-    int K = 199;
+    int K = 10;
     for(int i = 0; i < instance.dimension; i++){
         auto kclosest = this->findKClosestVertices(i, K, instance);
         for(int u : kclosest){
@@ -23,9 +23,11 @@ const Solution2Cycles MyAlgorithm::run(const InstanceTSP & instance){
             adj_matrix[u][i] = 1;
         }
     }
+    int cnt = 0;
     for(int i = 0; i < instance.dimension; i++){
         for(int j = i + 1; j < instance.dimension; j ++){
             if(adj_matrix[i][j] == 1){
+                cnt += 1;
                 adj[i].push_back(j);  
                 adj[j].push_back(i);
                 edges.push_back({i,j,instance.matrix[i][j]});                
@@ -48,28 +50,28 @@ const Solution2Cycles MyAlgorithm::run(const InstanceTSP & instance){
         std::cerr<< "found bridge at the beginning, stop" << std::endl;
     }
     std::cerr << edges.size() << std::endl;
-    for(auto & e : edges){
+    // for(auto & e : edges){
         
-        auto uv = std::find(adj[e.u].begin(), adj[e.u].end(), e.v);
-        auto vu = std::find(adj[e.v].begin(), adj[e.v].end(), e.u);
-        if(uv != adj[e.u].end() && vu != adj[e.v].end()){
-            adj[e.u].erase(uv);
-            adj[e.v].erase(vu);
-        }
-        else {
-            std::cerr << " e " << std::endl;
-        }
-        auto ap = find_articulation_points(adj);
-        if(ap.size() > 0){
-            adj[e.u].push_back(e.v);
-            adj[e.v].push_back(e.u);
-            continue;
-        }
-        else{
-            degs[e.u]--;
-            degs[e.v]--;
-        }
-    }
+    //     auto uv = std::find(adj[e.u].begin(), adj[e.u].end(), e.v);
+    //     auto vu = std::find(adj[e.v].begin(), adj[e.v].end(), e.u);
+    //     if(uv != adj[e.u].end() && vu != adj[e.v].end()){
+    //         adj[e.u].erase(uv);
+    //         adj[e.v].erase(vu);
+    //     }
+    //     else {
+    //         std::cerr << " e " << std::endl;
+    //     }
+    //     auto ap = find_articulation_points(adj);
+    //     if(ap.size() > 0){
+    //         adj[e.u].push_back(e.v);
+    //         adj[e.v].push_back(e.u);
+    //         continue;
+    //     }
+    //     else{
+    //         degs[e.u]--;
+    //         degs[e.v]--;
+    //     }
+    // }
 
     int cost = 0;
     int e = 0;
@@ -79,6 +81,8 @@ const Solution2Cycles MyAlgorithm::run(const InstanceTSP & instance){
         }
         e += adj[i].size();
     }
+
+    this->adj = adj;
 
     this->bestFoundSolution = new Solution2Cycles(bestSolution);
 

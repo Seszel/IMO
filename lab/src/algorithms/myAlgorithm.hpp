@@ -22,6 +22,8 @@ private:
 
 public:
 
+    std::vector<std::vector<int> > adj;
+
     MyAlgorithm(Solution2Cycles * startSolution){
         this->startSolution = startSolution;
     }
