@@ -7,15 +7,15 @@
 #include <chrono>
 #include <unistd.h>
 
-#include <ctime>
-#include <omp.h>
-#include <mutex>
-#include <thread>
-
 #include <iostream>
 #include <fstream>
 
 using namespace nlohmann;
+
+typedef std::vector<int> NEIGHBOURHOOD;
+
+//to jest zmienna, która oznacza ile iteracji będziemy wykonywać, u nas jest to 100 razy
+const int NUMBER_OF_ITERATIONS = 1;
 
 int main(){
 
@@ -27,11 +27,24 @@ int main(){
 
     auto path = getPathToWorkspaceFolder();
 
-    // auto t = std::chrono::system_clock::now();
-    // std::time_t timestamp = std::chrono::system_clock::to_time_t(t);
+    file.open(path + "resultFiles/results_lab_7.json", std::ios::out);
 
-    // file.open(path + "resultFiles/" + std::string(std::ctime(&timestamp)) + ".json", std::ios::out);
+    std::vector<Algorithm2cycles *> algs_start;
+    // algs_start.push_back(new AlgorithmCycleExpansion());
+    // algs_start.push_back(new AlgorithmSeparateCycles());
+    algs_start.push_back(new AlgorithmRandom());
 
+    std::vector<Algorithm2cyclesMeta *> algs_meta;
+    // algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 10000, false, "cyc_exp", 2, 2));
+    // algs_meta.push_back(new AlgorithmHEA(nullptr, 20, 10000, false, "cyc_exp", 7, 2));
+    algs_meta.push_back(new AlgorithmHEA(nullptr, 7, 300000, true, "cyc_exp", 1,1,3));
+
+
+    std::map<std::string, NEIGHBOURHOOD> neighbourhoods = {
+        {"edges",{Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES}},
+        // {"vertices", {Solution2Cycles::SWAP_BETWEEN_CYCLES, Solution2Cycles::SWAP_2_VERTICES}},
+        // {"all", {Solution2Cycles::SWAP_2_EDGES, Solution2Cycles::SWAP_BETWEEN_CYCLES, Solution2Cycles::SWAP_2_VERTICES}}
+    };
 
     //load instances
     auto pathA = getPathToWorkspaceFolder();
@@ -39,9 +52,9 @@ int main(){
     auto pathB = getPathToWorkspaceFolder();
     pathB += "data/krob200.tsp";
 
-    InstanceTSP A, B;
-    A.readFromFile(pathA);
-    B.readFromFile(pathB);
+    std::vector<InstanceTSP> instances;instances.resize(2);
+    instances[0].readFromFile(pathA);
+    instances[1].readFromFile(pathB);
     std::cout << "Data loaded." << std::endl;
 
     auto myalg = MyAlgorithm(nullptr);
@@ -52,14 +65,14 @@ int main(){
     int iterations = 10;
 
     for(int i = 0; i < iterations; i++){
-        sol = hea.run(A);
+        sol = hea.run(instances[0]);
         std::cerr << sol.getTotalCost() << " ";
 
     }
     std::cerr << std::endl;
 
     for(int i = 0; i < iterations; i++){
-        sol = hea.run(B);
+        sol = hea.run(instances[1]);
         std::cerr << sol.getTotalCost() << " ";
     }
     
@@ -68,7 +81,7 @@ int main(){
     alpha = 1.0f;
     beta = 1.0f;
     regret.setParams(1.0f,1.0f);
-    sol = regret.run(A);
+    sol = regret.run(instances[0]);
     int arange = 15;
     struct score {
         float avg;

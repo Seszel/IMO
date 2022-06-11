@@ -7,6 +7,8 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
     auto start = std::chrono::steady_clock::now();
 
     auto alg_cycexp = AlgorithmCycleExpansion();
+    alg_cycexp.freq = this->cyc_exp_freq;
+    alg_cycexp.random_upper_bound = this->cyc_exp_ub;
     auto alg_greedy = AlgorithmGreedyNN();
     auto alg_random = AlgorithmRandom();
     auto alg_regret = Algorithm2Regret();
@@ -17,7 +19,7 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
 
     // generate initial population
     std::vector<Solution2Cycles> population;
-    for(int i = 0; i < population_size; i++){
+    for(int i = 0; i < N_BATCHES * population_size; i++){
         Solution2Cycles sol;
         
         if(this->alg_init_pop == "cyc_exp")
@@ -37,29 +39,36 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
     auto bestSolution = population[0];
 
     std::vector<Solution2Cycles *> pop_ptr;
-    for(int i = 0; i < population_size; i++){
+    for(int i = 0; i < population_size * N_BATCHES; i++){
         pop_ptr.push_back(&population[i]);
     }
 
-    std::vector<std::vector<float> > cov_matrix;
+    std::vector<std::vector<std::vector<float> > > cov_matrix;
     cov_matrix.resize(population_size);
     for(auto & r : cov_matrix)
         r.resize(population_size);
     
     for(int i = 0; i < population_size; i ++){
         for(int j = i; j < population_size; j++){
-            if(i == j){
-                cov_matrix[i][j] = 0;
-                continue;
+            for(int k = 0; k < N_BATCHES; k++){
+                cov_matrix[i][j].resize(N_BATCHES);
+                cov_matrix[j][i].resize(N_BATCHES);
+                if(i == j){
+                    cov_matrix[i][j][k] = 0;
+                    continue;
+                }
+                float cov = population[k*population_size + i].sumEdges(population[k*population_size + j]).size() / 400.0;
+                cov_matrix[i][j][k] = cov;
+                cov_matrix[j][i][k] = cov;                
             }
-            int cov = population[i].sumEdges(population[j]).size() / 2.0;
-            cov_matrix[i][j] = cov;
-            cov_matrix[j][i] = cov;
+
         }
     }
 
     int iteration = 0;
     int n_iter_without_impr = 0;
+
+    int current_batch = 0;
 
     while(duration < max_time){
 
@@ -68,10 +77,10 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
         while(mom_ind == dad_ind)
             mom_ind = rand() % population_size;
 
-        auto dad = population[dad_ind], mom = population[mom_ind];
-        auto child = dad;
+        auto dad = pop_ptr[current_batch * population_size + dad_ind], mom = pop_ptr[current_batch * population_size + mom_ind];
+        auto child = *dad;
 
-        auto edges_to_delete = dad.minusEdges(mom);
+        auto edges_to_delete = dad->minusEdges(*mom);
         
         std::vector<int> vertices_to_delete = {}; 
         for(auto & edge : edges_to_delete){
@@ -100,43 +109,59 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
             child = alg_lp.run(instance);
         }
 
-        std::sort(pop_ptr.begin(), pop_ptr.end(), [](Solution2Cycles * a, Solution2Cycles * b){
+        std::sort(pop_ptr.begin() + current_batch * population_size, pop_ptr.begin() + (current_batch + 1) * population_size, [](Solution2Cycles * a, Solution2Cycles * b){
             return a->getTotalCost() < b->getTotalCost();
         });
 
-        if(child.getTotalCost() < pop_ptr.back()->getTotalCost()){
+        if(child.getTotalCost() < pop_ptr[(current_batch + 1) * population_size - 1]->getTotalCost()){
 
             std::vector<float> cov_vector(population_size, 0);
-            int d = pop_ptr.back() - &population[0];
+            int d = &pop_ptr[(current_batch + 1) * population_size - 1] - &pop_ptr[current_batch * population_size];
             float _min = RAND_MAX;
             for(int i = 0; i < population_size; i++){
-                int cov = population[i].sumEdges(population[d]).size() / 2.0;
+                float cov = population[i].sumEdges(population[d]).size() / 400.0;
                 cov_vector[i] = cov;
                 if(_min > cov){
                     _min = cov;
                 }
             }
-            if(_min < 185){
+            if(_min < 0.8){
 
                 *pop_ptr.back() = child;
 
                 // update cov matrix
 
                 for(int j = 0; j < population_size; j++){
-                    cov_matrix[d][j] = cov_vector[j];
-                    cov_matrix[j][d] = cov_vector[j];
+                    cov_matrix[d][j][current_batch] = cov_vector[j];
+                    cov_matrix[j][d][current_batch] = cov_vector[j];
                 }  
                             
             }
-            // else {
-            //     this->perturbate(child, 8, instance);
-            //     alg_lp.setStartingSolution(&child);
-            //     child = alg_lp.run(instance);
-            // }
-        }
+            if(n_iter_without_impr > 20 && iteration % 20 == 0) {
+                // int from = population_size/2;
+                // while(from < pop_ptr.size()){
+                //     auto sol = alg_cycexp.run(instance);
+                //     *pop_ptr[from] = sol;
+                //     from++;
+                // }
+                std::cerr << "|";
+                std::random_shuffle(pop_ptr.begin(), pop_ptr.end());                    
+                // this->perturbate(child, 8, instance);
+                // alg_lp.setStartingSolution(&child);
+                // child = alg_lp.run(instance);
 
-        if(pop_ptr.front()->getTotalCost() < bestSolution.getTotalCost()){
-            bestSolution = *pop_ptr.front();
+            }
+        }
+        int r;
+        int __min = RAND_MAX;
+        for(int i = 0; i < pop_ptr.size(); i++)
+            if(pop_ptr[i]->getTotalCost() < __min){
+                __min = pop_ptr[i]->getTotalCost();
+                r = i;
+            }
+
+        if(pop_ptr[r]->getTotalCost() < bestSolution.getTotalCost()){
+            bestSolution = *pop_ptr[current_batch * population_size];
             std::cerr << "=";
             n_iter_without_impr = -1;
         }
@@ -148,6 +173,7 @@ const Solution2Cycles AlgorithmHEA::run(const InstanceTSP & instance){
         iteration += 1;
         n_iter_without_impr += 1;
 
+        current_batch = (current_batch + 1) % N_BATCHES;
     }
 
     std::cerr << iteration << std::endl;

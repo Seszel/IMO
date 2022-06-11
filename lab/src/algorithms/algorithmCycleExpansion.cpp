@@ -12,6 +12,14 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
 
     finalSolution.setInstance(instance);
 
+    struct Insertion{
+        int v;
+        int pos;
+        int cost;
+    };
+
+    std::vector<Insertion> insertions = {};
+
     while(!allVisited(visited)){
 
         //choose random starting vertex
@@ -29,13 +37,17 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
         visited[secondVertex] = true;
         
         currentCycle->pushBackVertex(secondVertex);
-        
+        int cnt =0;
         //for each cycle
         while(currentCycle->getLength() < cycleLength){
 
             int min = std::numeric_limits<int>::max();
             int pos;
             int next;
+
+            insertions.clear();
+            insertions.shrink_to_fit();
+            insertions.push_back({next, pos, min});
 
             for(int insPos = 0; insPos < currentCycle->getLength(); insPos++){
 
@@ -47,18 +59,31 @@ const Solution2Cycles AlgorithmCycleExpansion::run(const InstanceTSP & instance)
                         int succ = (*currentCycle)[insPos];
                         int diff = instance.matrix[prev][v] + instance.matrix[v][succ] - instance.matrix[prev][succ];
 
-                        if(diff < min){
+                        if(diff < insertions.back().cost){
 
-                            min = diff;
-                            next = v;
-                            pos = insPos;
+                            if(insertions.size() == this->random_upper_bound){
+                                insertions.pop_back();
+                            }
+                            insertions.push_back({v, insPos, diff});
+                            std::sort(insertions.begin(), insertions.end(), [](const Insertion & a, const Insertion & b){
+                                return a.cost < b.cost;
+                            });
                         }
                     }
                 }
             }
 
-            currentCycle->addVertex(pos, next);
-            visited[next]= true;
+            int v = 0;
+            if(cnt % this->freq == 0 && this->random_upper_bound > 1){
+                int r = rand()%this->random_upper_bound;
+                currentCycle->addVertex(insertions[r].pos, insertions[r].v);
+                v = insertions[r].v;
+            }
+            else {
+                v = insertions.front().v;
+                currentCycle->addVertex(insertions.front().pos, insertions.front().v);
+            }
+            visited[v]= true;
         }
     }
 

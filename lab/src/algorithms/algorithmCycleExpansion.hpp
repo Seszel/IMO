@@ -11,6 +11,9 @@ private:
 
 public:
 
+    int freq = 1;
+    int random_upper_bound = 1;
+
     const std::string name = "cycle_expansion";
 
     AlgorithmCycleExpansion(){}
